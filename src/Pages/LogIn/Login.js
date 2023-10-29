@@ -1,11 +1,12 @@
-import React from 'react'
-import './Login.scss'
+import React from "react";
+import * as yup from "yup";
+
 function Login() {
-  return (
-    <div className='login-page'>
-        <h1>Login</h1>
-    </div>
-  )
+  const schema = yup.object().shape({
+    email: yup.string().email().required(),
+    password: yup.required().min(8).matches(/^[a-zA-Z0-9_.-]*$/),
+  });
+  return <div>Login</div>;
 }
 
-export default Login
+export default Login;
