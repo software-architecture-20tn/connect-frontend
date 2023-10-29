@@ -1,16 +1,19 @@
-import { useForm, Controller } from "react-hook-form";
+import { Controller } from "react-hook-form";
 import { TextField, FormControl } from "@mui/material";
-
+import "./MyTextField.scss";
 import React from "react";
 
 function MyTextField({
   className,
   name,
   control,
-  errorMsg,
+  label,
+  textWidth = "100%",
+  errorMsg = null,
   initialValue = "",
-  variant = "outlined",
-  ...prop
+  variant = "standard",
+
+  ...props
 }) {
   return (
     <Controller
@@ -18,11 +21,15 @@ function MyTextField({
       control={control}
       defaultValue={initialValue}
       render={({ field }) => (
-        <FormControl>
+        <FormControl style={{ width: textWidth }}>
           <TextField
             {...field}
-            className={`${className} textfield`}
+            className={`${className} text-field`}
             variant={variant}
+            label={label}
+            error={errorMsg !== null}
+            fullWidth
+            {...props}
           />
           {errorMsg && <p className="error">{errorMsg}</p>}
         </FormControl>

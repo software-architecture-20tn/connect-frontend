@@ -3,6 +3,7 @@
     --bs-font-sans-serif: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --bs-font-serif: Georgia, serif;
     --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    
 }
 
 [data-theme='light'] {
@@ -15,6 +16,8 @@
     --masthead-text: #fff;
     --button-color: #263238;
     --button-text: #fff;
+    --line-color: #130505;
+    --field-background-color: #fff;
 }
 
 [data-theme='dark'] {
@@ -27,4 +30,6 @@
     --masthead-text: #fff;
     --button-color: var(--accent-color);
     --button-text: #fff;
+    --line-color: #fff;
+    --field-background-color: #263238;
 }

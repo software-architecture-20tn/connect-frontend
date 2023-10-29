@@ -8,7 +8,7 @@ function App() {
   return (
     <div className="App" data-theme={theme}>
       <div>
-        App
+        <Login />
       </div>
     </div>
   );

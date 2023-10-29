@@ -1,0 +1,35 @@
+.login {
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100vw;
+    height: 100vh;
+
+    &__form {
+        width: 30%;
+        height: 70%;
+        border-color: var(--line-color);
+        border-style: solid;
+        background-color: var(--background-color);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+
+        &__title {
+            font-family: var(--bs-font-sans-serif);
+            font-size: 30px;
+            margin: 20px;
+            color: var(--text-color);
+        }
+        &__greeting {
+            font-family: var(--bs-font-sans-serif);
+            margin: 20px;
+            color: var(--text-color);
+        }
+
+    }
+
+}

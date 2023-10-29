@@ -1,0 +1,24 @@
+
+.text-field {
+    height: 80px;
+    margin: 40px 0;
+    input {
+        width: 100%;
+        // background-color: var(--field-background-color);
+        height: 40px;
+        color: var(--text-color);
+    }
+   
+    .MuiFormLabel-root {
+        color: var(--text-color);
+    }
+    
+    
+
+    .MuiInput-underline {
+        &:before {
+            border-bottom: 1px solid var(--text-color);
+        }
+
+    }
+}
