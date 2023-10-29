@@ -1,6 +1,7 @@
 import "./App.css";
 import "./scss/variables.scss";
-import Login from "./Pages/Login";
+// import Login from "./Pages/LogIn";
+import Signup from "./Pages/Signup";
 
 function App() {
   // setToLS('all-themes', themes.default);
@@ -8,7 +9,8 @@ function App() {
   return (
     <div className="App" data-theme={theme}>
       <div>
-        <Login />
+        {/* <Login /> */}
+        <Signup />
       </div>
     </div>
   );
