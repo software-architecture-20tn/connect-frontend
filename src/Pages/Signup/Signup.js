@@ -42,7 +42,7 @@ function Signup() {
     };
     try {
       const response = await fetch(
-        "https://chat-app.nguyenvanloc.name.vn/api/users/register/",
+        "https://chat-app.nguyenvanloc.name.vn/api/users/xxxxxx",
         {
           method: "POST",
           headers: {
