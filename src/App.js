@@ -4,10 +4,10 @@ import Login from "./Pages/Login";
 
 function App() {
   // setToLS('all-themes', themes.default);
-  const theme = "light";
+  const theme = "dark";
   return (
     <div className="App" data-theme={theme}>
-      <div>
+      <div className="container">
         <Login />
       </div>
     </div>

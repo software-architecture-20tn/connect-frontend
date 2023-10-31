@@ -5,9 +5,10 @@ function MyButton({ className, text, type, variant = "contained", ...props }) {
   return (
     <div>
       <Button
-        className={`${className} custom-button`}
+        className={`custom-button ${className}`}
         variant={variant}
         type={type}
+        color="primary"
         {...props}
       >
         {text}

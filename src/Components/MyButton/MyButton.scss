@@ -1,0 +1,9 @@
+.custom-button {
+    .MuiButton-contained {
+        background-color: red;
+        color: #fff;
+        &:hover {
+            background-color: pink;
+        }
+    }
+}
