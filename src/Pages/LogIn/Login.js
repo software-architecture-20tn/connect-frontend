@@ -23,7 +23,39 @@ function Login() {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const onSubmit = (data) => console.log(data);
+
+  const fetchLogin = async (data) => {
+    const response = await fetch(
+      process.env.REACT_APP_API_URL + "/users/login/",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      },
+    );
+    try {
+      console.log(response);
+      return response;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const onSubmit = async (data) => {
+    const dataRequest = {
+      email: data.email,
+      password: data.password,
+    };
+    console.log(dataRequest);
+    try {
+      await fetchLogin(dataRequest);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   return (
     <div className="login">
       <form className="login__form" onSubmit={handleSubmit(onSubmit)}>

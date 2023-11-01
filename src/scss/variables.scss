@@ -1,9 +1,9 @@
-:root  {
+:root {
     --accent-color: #543fd7;
     --bs-font-sans-serif: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
     --bs-font-serif: Georgia, serif;
     --bs-font-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-    
+
 }
 
 [data-theme='light'] {
@@ -15,6 +15,7 @@
     --masthead-color: var(--accent-color);
     --masthead-text: #fff;
     --button-color: #263238;
+    --secondary-button-color: color-mix(in srgb, var(--button-color) 90%, white);
     --button-text: #fff;
     --line-color: #130505;
     --field-background-color: #fff;
@@ -30,6 +31,7 @@
     --masthead-color: #212a2e;
     --masthead-text: #fff;
     --button-color: var(--accent-color);
+    --secondary-button-color: color-mix(in srgb, var(--button-color) 90%, white);
     --button-text: #fff;
     --line-color: #fff;
     --field-background-color: #263238;
