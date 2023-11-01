@@ -1,39 +1,27 @@
+
 .text-field {
     height: 80px;
-
+    margin: 40px 0;
     input {
         width: 100%;
-        height: 30px;
+        // background-color: var(--field-background-color);
+        height: 40px;
         color: var(--text-color);
     }
-
+   
     .MuiFormLabel-root {
-        color: var(--text-color-light);
-    }
-
+        color: var(--text-color);
+    } 
 
     .MuiInput-underline {
         &:before {
-            border-bottom: 1px solid var(--text-color-light);
+            border-bottom: 1px solid var(--text-color);
         }
 
     }
-
-
-
-    
 }
-
-.error {
-    display: flex;
-    align-items: center;
-    margin-top: -20px;
-    &__icon {
-        color: red;
-    }
-    &__message {
-        color: red;
-        margin-left: 2px;
-    }
+.error{
+    margin: 0;
+    margin-bottom: 5px;
+    font-size: 13px;
 }
-
