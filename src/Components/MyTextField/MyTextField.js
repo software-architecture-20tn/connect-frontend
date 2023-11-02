@@ -1,5 +1,6 @@
 import { Controller } from "react-hook-form";
 import { TextField, FormControl } from "@mui/material";
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
 import "./MyTextField.scss";
 import React from "react";
 
@@ -31,7 +32,12 @@ function MyTextField({
             fullWidth
             {...props}
           />
-          {errorMsg && <p className="error">{errorMsg}</p>}
+          {errorMsg && (
+            <p className="error">
+              <ErrorOutlineIcon className="error__icon" />
+              <span className="error__message">{errorMsg}</span>
+            </p>
+          )}
         </FormControl>
       )}
     />
