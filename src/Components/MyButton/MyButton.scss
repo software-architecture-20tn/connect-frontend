@@ -1,8 +1,8 @@
 .custom-button{
-    min-width: 200px;
-    width: 200px;
-    background-color: var(--button-color);
-    color: var(--button-text);
-    box-shadow: rgba(255, 255, 255, 0.15) 0 1px 0 inset,rgba(46, 54, 80, 0.075) 0 1px 1px;
+    background-color: var(--button-color) !important;
+    color: var(--button-text) !important;
     border-radius: 30px !important;
+    &:hover {
+        background-color: color-mix(in srgb, var(--button-color) 90%, white) !important;
+    }
 }

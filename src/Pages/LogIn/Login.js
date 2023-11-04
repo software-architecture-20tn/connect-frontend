@@ -5,6 +5,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import MyTextField from "../../Components/MyTextField/MyTextField";
 import "./Login.scss";
 import MyButton from "../../Components/MyButton/MyButton";
+// import { fetchApi } from "../../api/auth";
+import { useDispatch } from "react-redux";
+import { logIn } from "../../_helpers/authThunk";
 
 function Login() {
   const schema = yup.object().shape({
@@ -24,36 +27,13 @@ function Login() {
     resolver: yupResolver(schema),
   });
 
-  const fetchLogin = async (data) => {
-    const response = await fetch(
-      process.env.REACT_APP_API_URL + "/users/login/",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      },
-    );
-    try {
-      console.log(response);
-      return response;
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const onSubmit = async (data) => {
+  const dispatch = useDispatch();
+  const onSubmit = (data) => {
     const dataRequest = {
       email: data.email,
       password: data.password,
     };
-    console.log(dataRequest);
-    try {
-      await fetchLogin(dataRequest);
-    } catch (err) {
-      console.log(err);
-    }
+    dispatch(logIn(dataRequest));
   };
 
   return (
