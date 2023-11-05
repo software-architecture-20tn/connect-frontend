@@ -1,7 +1,12 @@
 import React from "react";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
+import { Link } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import { signUp } from "../../_helpers/authThunk";
 import MyTextField from "../../Components/MyTextField/MyTextField";
 import "./Signup.scss";
 import MyButton from "../../Components/MyButton/MyButton";
@@ -31,7 +36,6 @@ function Signup() {
     resolver: yupResolver(schema),
   });
   const onSubmit = async (data) => {
-    console.log(data);
     const dataRequest = {
       first_name: data.firstName,
       last_name: data.lastName,
@@ -40,34 +44,35 @@ function Signup() {
       password_retype: data.passwordConfirm,
       username: data.userName,
     };
-    try {
-      const response = await fetch(
-        "https://chat-app.nguyenvanloc.name.vn/api/users/register/",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(dataRequest),
-        },
-      );
-      if (!response.ok) {
-        const errorText = await response.text(); // Lấy nội dung lỗi từ response
-        console.log(errorText);
-        throw new Error("Lỗi trong quá trình xử lý yêu cầu.");
+    const dataResponse = await signUp(dataRequest);
+    if (dataResponse.status) {
+      toast.success("Register successful!", {
+        position: "top-right",
+        autoClose: 1000,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    } else {
+      const entries = Object.entries(dataResponse);
+      for (const [key, value] of entries) {
+        if (key === "status") continue;
+        toast.error(`${key}: ${value}`, {
+          position: "top-right",
+          autoClose: 1000,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
       }
-
-      const resData = await response.json();
-      console.log(resData);
-    } catch (err) {
-      console.error(err);
     }
   };
   return (
     <div className="signup">
+      <ToastContainer />
       <form className="signup__form" onSubmit={handleSubmit(onSubmit)}>
         <label className="signup__form__title">Register</label>
-        <label className="signup__form__greeting">Welcome back</label>
+        <label className="signup__form__greeting">Welcome</label>
         <div className="signup__rows">
           <MyTextField
             className="signup__form__input"
@@ -121,6 +126,9 @@ function Signup() {
           textWidth="70%"
         />
         <MyButton text="Register" type="submit" />
+        <Link className="link_to_signin" to="/login">
+          Đăng nhập
+        </Link>
       </form>
     </div>
   );

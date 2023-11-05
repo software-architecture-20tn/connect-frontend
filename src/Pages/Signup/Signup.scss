@@ -17,6 +17,8 @@
     &__form {
         width: 30%;
         height: 95%;
+        min-height: 700px;
+        min-width: 500px;
         box-shadow: var(--shadow-color) 0px 7px 29px 0px;
         border-radius: 20px;
         // border-color: var(--line-color);
@@ -40,5 +42,10 @@
         }
 
     }
-
+    .link_to_signin{
+        text-decoration: none;
+        font-size: 14px;
+        margin: 7px;
+        color: var(--text-color);
+    }
 }
