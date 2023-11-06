@@ -1,15 +1,22 @@
 import React from "react";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
+import { Link, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import MyTextField from "../../Components/MyTextField/MyTextField";
 import "./Login.scss";
 import MyButton from "../../Components/MyButton/MyButton";
 // import { fetchApi } from "../../api/auth";
 import { useDispatch } from "react-redux";
 import { logIn } from "../../_helpers/authThunk";
+import { getToken } from "../../_helpers/authHelpers";
 
-function Login() {
+function Login({ handleIsLogin }) {
+  const navigate = useNavigate();
+
   const schema = yup.object().shape({
     email: yup.string().email().required("Email is required"),
     password: yup
@@ -28,16 +35,30 @@ function Login() {
   });
 
   const dispatch = useDispatch();
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     const dataRequest = {
       email: data.email,
       password: data.password,
     };
-    dispatch(logIn(dataRequest));
+    await dispatch(logIn(dataRequest));
+    const token = getToken();
+    if (token !== null) {
+      toast.success("Login successful!", {
+        position: "top-right",
+        autoClose: 1000,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setTimeout(() => {
+        handleIsLogin(true);
+        navigate("/");
+      }, 1000);
+    }
   };
-
   return (
     <div className="login">
+      <ToastContainer />
       <form className="login__form" onSubmit={handleSubmit(onSubmit)}>
         <label className="login__form__title">Login</label>
         <label className="login__form__greeting">Welcome back</label>
@@ -59,6 +80,9 @@ function Login() {
           textWidth="70%"
         />
         <MyButton text="Log in" type="submit" />
+        <Link className="link_to_signup" to="/register">
+          Đăng ký
+        </Link>
       </form>
     </div>
   );
