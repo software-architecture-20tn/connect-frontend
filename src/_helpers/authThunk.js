@@ -5,7 +5,7 @@ import { setToken, removeToken } from "./authHelpers";
 const loginApi = (body) => fetchApi.post("/users/login/", body);
 const signupApi = (body) => fetchApi.post("/users/register/", body);
 
-export const logIn = createAsyncThunk("auth/login", async (data) => {
+export const logIn = createAsyncThunk("auth/login", async (data, { rejectWithValue }) => {
   try {
     const response = await loginApi(data);
     console.log(data, response);
@@ -13,29 +13,27 @@ export const logIn = createAsyncThunk("auth/login", async (data) => {
     console.log(userData);
     if (response.ok) {
       setToken(userData.token);
+      return {
+        ...userData,
+        status: response.status,
+      };
     }
-    return {
-      ...userData,
-      status: response.status,
-    };
+    else {
+      return rejectWithValue(response.status);
+    }
   } catch (err) {
-    console.log(err);
+    return rejectWithValue(err.response.data);
   }
 });
 
-export const signUp = async (data) => {
+export const signUp = createAsyncThunk('auth/signup', async (data, { rejectWithValue }) => {
   try {
     const response = await signupApi(data);
-    console.log(data, response);
-    const userData = await response.json();
-    return {
-      ...userData,
-      status: response.ok,
-    };
+    // handle response here
   } catch (err) {
-    console.log(err);
+    return rejectWithValue(err.response.data);
   }
-};
+});
 
 export const logOut = createAsyncThunk("auth/logout", async () => {
   removeToken();
