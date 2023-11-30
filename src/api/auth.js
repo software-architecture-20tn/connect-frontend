@@ -11,8 +11,8 @@ function request(method) {
       method,
       headers: {
         "Content-Type": "application/json",
+        ...getAuthHeader(),
       },
-      ...getAuthHeader(),
     };
 
     if (body) {
