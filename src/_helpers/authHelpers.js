@@ -14,6 +14,6 @@ export const removeToken = () => {
 export const getAuthHeader = () => {
   if (!getToken()) return {};
   return {
-    Authorization: `Bearer ${getToken()}`,
+    Authorization: `Token ${getToken()}`,
   };
 };

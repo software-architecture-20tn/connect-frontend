@@ -1,22 +1,22 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { logIn,logOUt } from "../_helpers/authThunk";
+import { logIn, logOut } from "../_helpers/authThunk";
 
 const initialState = {
-    user: null,
+  user: null,
 };
 
 const userSlice = createSlice({
-    name: "user",
-    initialState,
-    reducers: {},
-    extraReducers: {
-        [logIn.fulfilled]: (state, action) => {
-            state.user = action.payload.user;
-        },
-        [logOut.fulfilled]: (state, action) => {
-            state.user = null;
-        },
+  name: "user",
+  initialState,
+  reducers: {},
+  extraReducers: {
+    [logIn.fulfilled]: (state, action) => {
+      state.user = action.payload.user;
     },
+    [logOut.fulfilled]: (state, action) => {
+      state.user = null;
+    },
+  },
 });
 
 export default userSlice.reducer;
