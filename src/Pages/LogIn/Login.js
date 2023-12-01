@@ -22,8 +22,8 @@ function Login({ handleIsLogin }) {
     password: yup
       .string()
       .required("Password is required")
-      .min(8)
-      .matches(/^[a-zA-Z0-9_.-]*$/),
+      .min(8, "Password must be at least 8 characters.")
+      .matches(/^[a-zA-Z0-9_.-]*$/, "Password can only contain Latin letters."),
   });
 
   const {

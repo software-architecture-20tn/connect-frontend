@@ -1,0 +1,31 @@
+.profile {
+    display: flex;
+    flex-direction: row;
+    background-color: var(--alternate-background-colour);
+    width: 100vw;
+    height: 100vh;
+    &__drawer {
+        position: relative;
+
+        .MuiDrawer-paper {
+            background-color: var(--background-color);
+            width: 30vw;
+            height: 100vh;
+        }
+
+        &__form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            position: absolute;
+            top: 50%;
+            transform: translate(0, -50%);
+            background-color: var(--background-color);
+            &__bio {
+                margin-bottom: 50px;
+            }
+        }
+    }
+    
+}

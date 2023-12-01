@@ -1,39 +1,17 @@
 import React, { useEffect, useState } from "react";
-// import { useNavigate } from "react-router-dom";
-
-// import MyButton from "../../Components/MyButton/MyButton";
-// import { removeToken } from "../../_helpers/authHelpers";
-// import { logOut } from "../../_helpers/authThunk";
-// import { useDispatch } from "react-redux";
+import MyTextField from "../../Components/MyTextField/MyTextField";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+import MyButton from "../../Components/MyButton/MyButton";
 import { fetchApi } from "../../api/auth";
+import { Drawer } from "@mui/material";
+import "./Home.scss";
 
 function Home({ handleIsLogin }) {
-  // const navigate = useNavigate();
-
-  // const LogOut = () => {
-  //   handleIsLogin(false);
-  //   dispatch(logOut());
-  //   navigate("/login");
-  // };
-  // const [user, setUser] = useState({
-  //   avatar: 'avatar.png',
-  //   realName: 'John Doe',
-  //   username: 'johndoe',
-  //   phoneNumber: '123-456-7890',
-  //   bio: 'This is John Doe',
-  //   settings: {
-  //     notificationsAndSounds: true,
-  //     privacyAndSecurity: true,
-  //     dataAndStorage: true,
-  //     chatSettings: true,
-  //     device: 'Device Name'
-  //   },
-  //   chats: ['Chat 1', 'Chat 2', 'Chat 3']
-  // });
-
   const getUserInfo = () => fetchApi.get("/users/me/", "");
   const [user, setUser] = useState(null);
-
+  // const [drawerOpen, setDrawerOpen] = useState(true);
   useEffect(() => {
     const fetchUserData = async () => {
       const response = await getUserInfo();
@@ -45,32 +23,66 @@ function Home({ handleIsLogin }) {
 
     fetchUserData();
   }, []);
+  const schema = yup.object().shape({
+    firstName: yup.string(),
+    lastName: yup.string(),
+    bio: yup.string(),
+    username: yup.string().matches(/^[a-zA-Z0-9]*$/, "Invalid username"),
+  });
+
+  const { handleSubmit, control } = useForm({
+    resolver: yupResolver(schema),
+  });
   if (!user) {
     return <p>Loading...</p>;
   }
   const saveUserInfo = () => {
     // Save user info logic here
   };
+
   return (
-    // <div>
-    //   <p>Home</p>
-    //   <MyButton text="Log out" onClick={LogOut} />
-    // </div>
-    <div style={{ display: "flex" }}>
-      <div style={{ flex: "0 0 200px", padding: "10px" }}>
-        <img src={user.avatar} alt="User Avatar" />
-        <h2>{user.first_name + user.last_name}</h2>
-        <p>@{user.username}</p>
-        <h3>Account</h3>
-        <p>Bio: {user.bio}</p>
-        <button onClick={saveUserInfo}>Save</button>
-      </div>
-      <div style={{ flex: "1", padding: "10px" }}>
-        <h2>Chats</h2>
-        {/* {user.chats.map((chat, index) => (
-          <p key={index}>{chat}</p>
-        ))} */}
-      </div>
+    <div className="profile">
+      {user && (
+        <Drawer anchor="left" variant="permanent" className="profile__drawer">
+          <form
+            onSubmit={handleSubmit(saveUserInfo)}
+            className="profile__drawer__form"
+          >
+            <MyTextField
+              label="Username"
+              name="username"
+              control={control}
+              initialValue={user.username}
+              textWidth="70%"
+            />
+            <MyTextField
+              label="First Name"
+              name="firstName"
+              control={control}
+              initialValue={user.firstName}
+              textWidth="70%"
+            />
+            <MyTextField
+              label="Last Name"
+              name="lastName"
+              control={control}
+              initialValue={user.lastName}
+              textWidth="70%"
+            />
+            <MyTextField
+              label="Bio"
+              name="bio"
+              control={control}
+              initialValue={user.bio}
+              textWidth="70%"
+              multiline
+              rows={4}
+              className="profile__drawer__form__bio"
+            />
+            <MyButton text="Save" type="submit" />
+          </form>
+        </Drawer>
+      )}
     </div>
   );
 }
