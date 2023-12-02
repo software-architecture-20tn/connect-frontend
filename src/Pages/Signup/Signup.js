@@ -5,8 +5,7 @@ import { Link } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
-import { signUp } from "../../_helpers/authThunk";
+import { fetchApi } from "../../api/auth";
 import MyTextField from "../../Components/MyTextField/MyTextField";
 import "./Signup.scss";
 import MyButton from "../../Components/MyButton/MyButton";
@@ -44,8 +43,12 @@ function Signup() {
       password_retype: data.passwordConfirm,
       username: data.userName,
     };
-    const dataResponse = await signUp(dataRequest);
-    if (dataResponse.status) {
+
+    const signUp = () => fetchApi.post("/users/register/", dataRequest);
+
+    const response = await signUp(dataRequest);
+    const dataResponse = await response.json();
+    if (dataResponse.ok) {
       toast.success("Register successful!", {
         position: "top-right",
         autoClose: 1000,

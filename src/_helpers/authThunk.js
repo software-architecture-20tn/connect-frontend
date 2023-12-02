@@ -3,7 +3,6 @@ import { fetchApi } from "../api/auth";
 import { setToken, removeToken } from "./authHelpers";
 
 const loginApi = (body) => fetchApi.post("/users/login/", body);
-const signupApi = (body) => fetchApi.post("/users/register/", body);
 
 export const logIn = createAsyncThunk(
   "auth/login",
@@ -20,19 +19,6 @@ export const logIn = createAsyncThunk(
       } else {
         return rejectWithValue(response.status);
       }
-    } catch (err) {
-      return rejectWithValue(err.response.data);
-    }
-  },
-);
-
-export const signUp = createAsyncThunk(
-  "auth/signup",
-  async (data, { rejectWithValue }) => {
-    try {
-      const response = await signupApi(data);
-      console.log(response);
-      // handle response here
     } catch (err) {
       return rejectWithValue(err.response.data);
     }

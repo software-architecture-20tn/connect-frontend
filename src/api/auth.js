@@ -23,6 +23,7 @@ function request(method) {
         requestSent.body = JSON.stringify(body);
       }
     }
+    console.log(requestSent);
     const response = await fetch(
       process.env.REACT_APP_API_URL + url,
       requestSent,
