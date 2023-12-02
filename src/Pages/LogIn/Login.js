@@ -14,7 +14,7 @@ import { useDispatch } from "react-redux";
 import { logIn } from "../../_helpers/authThunk";
 import { getToken } from "../../_helpers/authHelpers";
 
-function Login({ handleIsLogin }) {
+function Login() {
   const navigate = useNavigate();
 
   const schema = yup.object().shape({
@@ -51,7 +51,6 @@ function Login({ handleIsLogin }) {
         theme: "light",
       });
       setTimeout(() => {
-        handleIsLogin(true);
         navigate("/");
       }, 1000);
     }

@@ -10,9 +10,7 @@ export const logIn = createAsyncThunk(
   async (data, { rejectWithValue }) => {
     try {
       const response = await loginApi(data);
-      console.log(data, response);
       const userData = await response.json();
-      console.log(userData);
       if (response.ok) {
         setToken(userData.token);
         return {

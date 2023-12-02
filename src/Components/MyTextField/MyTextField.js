@@ -22,7 +22,10 @@ function MyTextField({
       control={control}
       defaultValue={initialValue}
       render={({ field }) => (
-        <FormControl style={{ width: textWidth }}>
+        <FormControl
+          style={{ width: textWidth }}
+          className={`${className} form-control`}
+        >
           <TextField
             {...field}
             className={`${className} text-field`}
@@ -30,6 +33,11 @@ function MyTextField({
             label={label}
             error={errorMsg !== null}
             fullWidth
+            onBlur={(e) => {
+              if (e.target.value === "") {
+                field.onChange({ target: { value: initialValue } });
+              }
+            }}
             {...props}
           />
           {errorMsg && (
