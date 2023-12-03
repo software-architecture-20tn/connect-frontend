@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { fetchApi } from "../../api/auth";
+import { fetchApi } from "../../api";
 import { Drawer } from "@mui/material";
 import "./Home.scss";
 import Profile from "./Profile";

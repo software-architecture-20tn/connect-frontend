@@ -22,16 +22,5 @@
     
 }
 
-.error {
-    display: flex;
-    align-items: center;
-    margin-top: -20px;
-    &__icon {
-        color: red;
-    }
-    &__message {
-        color: red;
-        margin-left: 2px;
-    }
-}
+
 

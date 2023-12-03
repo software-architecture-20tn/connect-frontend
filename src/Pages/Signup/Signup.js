@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { fetchApi } from "../../api/auth";
+import { fetchApi } from "../../api";
 import MyTextField from "../../Components/MyTextField/MyTextField";
 import "./Signup.scss";
 import MyButton from "../../Components/MyButton/MyButton";
@@ -14,7 +14,13 @@ function Signup() {
   const schema = yup.object().shape({
     firstName: yup.string().required("First name is required"),
     lastName: yup.string().required("Last name is required"),
-    userName: yup.string().required("Username is required"),
+    userName: yup
+      .string()
+      .matches(
+        /^[a-zA-Z0-9]*$/,
+        "Username should not contain space and special characters",
+      )
+      .required("Username is required"),
     email: yup.string().email().required("Email is required"),
     password: yup
       .string()

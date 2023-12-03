@@ -1,27 +1,38 @@
 import React, { useRef, useState } from "react";
-import MyTextField from "../../../Components/MyTextField/MyTextField";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
+import MyTextField from "../../../Components/MyTextField";
 import { yupResolver } from "@hookform/resolvers/yup";
 import MyButton from "../../../Components/MyButton/MyButton";
-import { fetchApi } from "../../../api/auth";
+import { fetchApi } from "../../../api";
 import Avatar from "../../../Components/Avatar";
 import LogoutIcon from "@mui/icons-material/Logout";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { IconButton } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../../_helpers/authThunk";
+// import ErrorMsg from "../../../Components/ErrorMsg";
 import "./Profile.scss";
 
 function Profile({ user }) {
   const schema = yup.object().shape({
     firstName: yup.string(),
     lastName: yup.string(),
-    bio: yup.string(),
-    username: yup.string().matches(/^[a-zA-Z0-9]*$/, "Invalid username"),
+    bio: yup.string().max(256, "Bio should not exceed 256 characters"),
+    username: yup
+      .string()
+      .matches(
+        /^[a-zA-Z0-9]*$/,
+        "Username should not contain space and special characters",
+      )
+      .required("Username should not be left blank"),
   });
 
-  const { handleSubmit, control } = useForm({
+  const {
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
     resolver: yupResolver(schema),
   });
   const [avatarFile, setAvatarFile] = useState(null);
@@ -63,9 +74,15 @@ function Profile({ user }) {
   };
 
   const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    setAvatarFile(file);
-    console.log(file);
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0];
+      if (!file.type.startsWith("image/")) {
+        alert("Please upload image file");
+        return;
+      }
+
+      setAvatarFile(file);
+    }
   };
 
   const handleAvatarClick = () => {
@@ -88,7 +105,6 @@ function Profile({ user }) {
             className="profile__btns__logout"
             color="primary"
             fontSize="large"
-            onCl
           />
         </IconButton>
       </div>
@@ -100,10 +116,13 @@ function Profile({ user }) {
           onChange={handleFileChange}
         />
         <Avatar
-          src={user.avatar}
+          src={avatarFile ? URL.createObjectURL(avatarFile) : user.avatar}
           className="profile__container__avatar"
           onClick={handleAvatarClick}
         />
+        {/* {avatarFile && !avatarFile.type.startsWith("image/") && (
+          <ErrorMsg errorMsg="Please upload image file" />
+        )} */}
         <form
           onSubmit={handleSubmit(saveUserInfo)}
           className="profile__container__form"
@@ -114,6 +133,7 @@ function Profile({ user }) {
             control={control}
             initialValue={user.username}
             textWidth="100%"
+            errorMsg={errors?.username?.message}
           />
           <MyTextField
             label="First Name"
@@ -121,6 +141,7 @@ function Profile({ user }) {
             control={control}
             initialValue={user.first_name}
             textWidth="100%"
+            errorMsg={errors?.firstName?.message}
           />
           <MyTextField
             label="Last Name"
@@ -128,6 +149,7 @@ function Profile({ user }) {
             control={control}
             initialValue={user.last_name}
             textWidth="100%"
+            errorMsg={errors?.lastName?.message}
           />
           <MyTextField
             label="Bio"
@@ -138,6 +160,7 @@ function Profile({ user }) {
             multiline
             rows={4}
             className="profile__container__form__bio"
+            errorMsg={errors?.bio?.message}
           />
           <MyButton
             text="Save"

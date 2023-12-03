@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchApi } from "../api/auth";
+import { fetchApi } from "../api";
 import { setToken, removeToken } from "./authHelpers";
 
 const loginApi = (body) => fetchApi.post("/users/login/", body);

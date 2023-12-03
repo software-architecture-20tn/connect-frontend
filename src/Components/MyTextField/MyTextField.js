@@ -1,6 +1,7 @@
 import { Controller } from "react-hook-form";
 import { TextField, FormControl } from "@mui/material";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+// import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import ErrorMsg from "../ErrorMsg";
 import "./MyTextField.scss";
 import React from "react";
 
@@ -40,12 +41,7 @@ function MyTextField({
             }}
             {...props}
           />
-          {errorMsg && (
-            <p className="error">
-              <ErrorOutlineIcon className="error__icon" />
-              <span className="error__message">{errorMsg}</span>
-            </p>
-          )}
+          {errorMsg && <ErrorMsg errorMsg={errorMsg} className="error" />}
         </FormControl>
       )}
     />

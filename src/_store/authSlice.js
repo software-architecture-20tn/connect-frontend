@@ -10,17 +10,12 @@ const initialState = {
 const authSlice = createSlice({
   name: "auth",
   initialState,
-  reducers: {
-    setLogin: (state) => {
-      state.isLogin = getToken() !== null;
-      state.token = getToken();
-    },
-  },
+  reducers: {},
   extraReducers: {
     [logIn.fulfilled]: (state, action) => {
       state.token = action.payload.token;
       state.error = null;
-      state.isLogin = getToken() !== null;
+      state.isLogin = true;
     },
     [logIn.rejected]: (state, action) => {
       state.error = action.payload;

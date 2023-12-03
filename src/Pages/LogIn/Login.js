@@ -1,19 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import MyTextField from "../../Components/MyTextField/MyTextField";
 import "./Login.scss";
 import MyButton from "../../Components/MyButton/MyButton";
 // import { fetchApi } from "../../api/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logIn } from "../../_helpers/authThunk";
-import { getToken } from "../../_helpers/authHelpers";
-
 function Login() {
   const navigate = useNavigate();
 
@@ -35,14 +32,9 @@ function Login() {
   });
 
   const dispatch = useDispatch();
-  const onSubmit = async (data) => {
-    const dataRequest = {
-      email: data.email,
-      password: data.password,
-    };
-    await dispatch(logIn(dataRequest));
-    const token = getToken();
-    if (token !== null) {
+  const authStates = useSelector((state) => state.auth);
+  useEffect(() => {
+    if (authStates.isLogin) {
       toast.success("Login successful!", {
         position: "top-right",
         autoClose: 1000,
@@ -53,8 +45,27 @@ function Login() {
       setTimeout(() => {
         navigate("/");
       }, 1000);
+    } else if (authStates.error >= 400 && authStates.error < 500) {
+      toast.error("Please recheck password and username", {
+        position: "top-right",
+        autoClose: 1000,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
+    // console.log("dit me con cho sua con cac may ngu vai lon", user);
+  }, [authStates]);
+
+  const onSubmit = async (data) => {
+    const dataRequest = {
+      email: data.email,
+      password: data.password,
+    };
+    console.log(dataRequest);
+    dispatch(logIn(dataRequest));
   };
+
   return (
     <div className="login">
       <ToastContainer />
