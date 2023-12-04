@@ -3,6 +3,7 @@
   background-color: var(--background-color);
   border: 1px solid var(--shadow-color);
   border-radius: 20px;
+  padding: 5px 5px;
   .popper-wrapper {
     .menu-body {
     }
@@ -14,9 +15,10 @@
   align-items: center;
   justify-content: flex-start;
   cursor: pointer;
-  width: 200px;
+  width: 150px;
   padding-left: 20px;
   margin: 5px;
+  margin-left: 10px;
   .title {
     font-size: 14px;
     margin: 0px 0 0px 5px;
@@ -27,4 +29,6 @@
 
 .item-popper:hover {
   color: var(--text-hover-color);
+  background-color: rgb(186, 185, 185);
+  border-radius: 20px;
 }

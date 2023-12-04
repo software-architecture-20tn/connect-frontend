@@ -9,7 +9,8 @@
         position: relative;
         .MuiDrawer-paper {
             background-color: var(--background-color);
-            width: 30vw;
+            width: 23vw;
+            max-width: 350px;
             height: 100vh;
         }
     }

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faGear,
@@ -12,62 +13,131 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import "tippy.js/dist/tippy.css";
 
-import "./FriendSidebar.scss";
-import ListFriend from "../ListFriend";
+import "./ChatSidebar.scss";
+import ChatList from "../ChatList";
 import Popper from "../Popper";
 import { logOut } from "../../_helpers/authThunk";
 import { useDebounce } from "../../hooks";
-// import { fetchApi } from "../../api/auth";
 
 const DEMO_DATA = [
   {
-    image:
-      "https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-1/391563902_1669683473557860_9213117967026616332_n.jpg?stp=dst-jpg_p200x200&_nc_cat=101&ccb=1-7&_nc_sid=5740b7&_nc_ohc=_-p-KS0ki6cAX9bAFda&_nc_ht=scontent.fsgn8-4.fna&oh=00_AfBtBrhr00Rnolh6yt5CEcdtfJaKjS6eelrONtY3ysC-6Q&oe=657060E5",
-    first_name: "Thái",
-    last_name: "Vũ",
-    username: "thaivu",
+    id: 1,
+    data: {
+      first_name: "Lê",
+      last_name: "Thái",
+      username: "vvthai",
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
+    },
+    active: true,
+    isOnline: true,
   },
   {
-    image:
-      "https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-1/391563902_1669683473557860_9213117967026616332_n.jpg?stp=dst-jpg_p200x200&_nc_cat=101&ccb=1-7&_nc_sid=5740b7&_nc_ohc=_-p-KS0ki6cAX9bAFda&_nc_ht=scontent.fsgn8-4.fna&oh=00_AfBtBrhr00Rnolh6yt5CEcdtfJaKjS6eelrONtY3ysC-6Q&oe=657060E5",
-    first_name: "Tùng Mậu",
-    last_name: "Vũ",
-    username: "tungmau",
+    id: 2,
+    data: {
+      first_name: "Vũ Văn",
+      last_name: "Thái",
+      username: "vvthai",
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
+    },
+    active: false,
+    isOnline: false,
   },
   {
-    image:
-      "https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-1/391563902_1669683473557860_9213117967026616332_n.jpg?stp=dst-jpg_p200x200&_nc_cat=101&ccb=1-7&_nc_sid=5740b7&_nc_ohc=_-p-KS0ki6cAX9bAFda&_nc_ht=scontent.fsgn8-4.fna&oh=00_AfBtBrhr00Rnolh6yt5CEcdtfJaKjS6eelrONtY3ysC-6Q&oe=657060E5",
-    first_name: "Tuyền",
-    last_name: "Vũ",
-    username: "vtuyen",
+    id: 3,
+    data: {
+      first_name: "Vũ Văn",
+      last_name: "Thái",
+      username: "vvthai",
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTQEZrATmgHOi5ls0YCCQBTkocia_atSw0X-Q&usqp=CAU",
+    },
+    active: false,
+    isOnline: false,
   },
   {
-    image:
-      "https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-1/391563902_1669683473557860_9213117967026616332_n.jpg?stp=dst-jpg_p200x200&_nc_cat=101&ccb=1-7&_nc_sid=5740b7&_nc_ohc=_-p-KS0ki6cAX9bAFda&_nc_ht=scontent.fsgn8-4.fna&oh=00_AfBtBrhr00Rnolh6yt5CEcdtfJaKjS6eelrONtY3ysC-6Q&oe=657060E5",
-    first_name: "Phú",
-    last_name: "Minh",
-    username: "mpt",
+    id: 4,
+    data: {
+      first_name: "Vũ Văn",
+      last_name: "Thái",
+      username: "vvthai",
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRZ6tM7Nj72bWjr_8IQ37Apr2lJup_pxX_uZA&usqp=CAU",
+    },
+    active: false,
+    isOnline: true,
   },
   {
-    image:
-      "https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-1/391563902_1669683473557860_9213117967026616332_n.jpg?stp=dst-jpg_p200x200&_nc_cat=101&ccb=1-7&_nc_sid=5740b7&_nc_ohc=_-p-KS0ki6cAX9bAFda&_nc_ht=scontent.fsgn8-4.fna&oh=00_AfBtBrhr00Rnolh6yt5CEcdtfJaKjS6eelrONtY3ysC-6Q&oe=657060E5",
-    first_name: "Le Thi",
-    last_name: "Quynh",
-    username: "ttQuanh",
+    id: 5,
+    data: {
+      first_name: "Vũ Văn",
+      last_name: "Thái",
+      username: "vvthai",
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRJo1MiPQp3IIdp54vvRDXlhbqlhXW9v1v6kw&usqp=CAU",
+    },
+    active: false,
+    isOnline: false,
   },
   {
-    image:
-      "https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-1/391563902_1669683473557860_9213117967026616332_n.jpg?stp=dst-jpg_p200x200&_nc_cat=101&ccb=1-7&_nc_sid=5740b7&_nc_ohc=_-p-KS0ki6cAX9bAFda&_nc_ht=scontent.fsgn8-4.fna&oh=00_AfBtBrhr00Rnolh6yt5CEcdtfJaKjS6eelrONtY3ysC-6Q&oe=657060E5",
-    first_name: "Hieu",
-    last_name: "Nguyen",
-    username: "nghi",
+    id: 6,
+    data: {
+      first_name: "Vũ Văn",
+      last_name: "Thái",
+      username: "vvthai",
+      image:
+        "https://huber.ghostpool.com/wp-content/uploads/avatars/3/596dfc2058143-bpfull.png",
+    },
+    active: false,
+    isOnline: true,
   },
   {
-    image:
-      "https://scontent.fsgn8-4.fna.fbcdn.net/v/t39.30808-1/391563902_1669683473557860_9213117967026616332_n.jpg?stp=dst-jpg_p200x200&_nc_cat=101&ccb=1-7&_nc_sid=5740b7&_nc_ohc=_-p-KS0ki6cAX9bAFda&_nc_ht=scontent.fsgn8-4.fna&oh=00_AfBtBrhr00Rnolh6yt5CEcdtfJaKjS6eelrONtY3ysC-6Q&oe=657060E5",
-    first_name: "Toàn",
-    last_name: "Huynh Thi",
-    username: "htp",
+    id: 7,
+    data: {
+      first_name: "Vũ Văn",
+      last_name: "Thái",
+      username: "vvthai",
+      image:
+        "https://www.paintingcontest.org/components/com_djclassifieds/assets/images/default_profile.png",
+    },
+    active: false,
+    isOnline: true,
+  },
+  {
+    id: 8,
+    data: {
+      first_name: "Vũ Văn",
+      last_name: "Thái",
+      username: "vvthai",
+      image:
+        "https://auraqatar.com/projects/Anakalabel/media//vesbrand/designer4.jpg",
+    },
+    active: false,
+    isOnline: false,
+  },
+  {
+    id: 9,
+    data: {
+      first_name: "Vũ Văn",
+      last_name: "Thái",
+      username: "vvthai",
+      image:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcSM6p4C6imkewkCDW-9QrpV-MMAhOC7GnJcIQ&usqp=CAU",
+    },
+    active: false,
+    isOnline: true,
+  },
+  {
+    id: 10,
+    data: {
+      first_name: "Vũ Văn",
+      last_name: "Thái",
+      username: "vvthai",
+      image: "https://pbs.twimg.com/profile_images/770394499/female.png",
+    },
+    active: false,
+    isOnline: true,
   },
 ];
 
@@ -109,12 +179,13 @@ const MENU_ITEMS = [
   },
 ];
 
-function FriendSidebar({ className, ...props }) {
+function ChatSidebar({ className, ...props }) {
   const navigate = useNavigate();
   const [listData, setListData] = useState([]);
   const [listFilter, setListFilter] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const debouncedValue = useDebounce(searchValue, 500);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const fetchData = async () => {
@@ -151,9 +222,8 @@ function FriendSidebar({ className, ...props }) {
   const handleMenuChange = (menuItem) => {
     switch (menuItem.type) {
       case "logout":
-        logOut();
+        dispatch(logOut());
         navigate("/login");
-        props.handleIsLogin(false);
         break;
       default:
     }
@@ -166,9 +236,13 @@ function FriendSidebar({ className, ...props }) {
     }
     const filtered = listData.filter(
       (friend) =>
-        friend.first_name.toLowerCase().includes(searchValue.toLowerCase()) ||
-        friend.last_name.toLowerCase().includes(searchValue.toLowerCase()) ||
-        friend.username.toLowerCase().includes(searchValue.toLowerCase()),
+        friend.data.first_name
+          .toLowerCase()
+          .includes(searchValue.toLowerCase()) ||
+        friend.data.last_name
+          .toLowerCase()
+          .includes(searchValue.toLowerCase()) ||
+        friend.data.username.toLowerCase().includes(searchValue.toLowerCase()),
     );
     setListFilter(filtered);
   }, [debouncedValue]);
@@ -231,7 +305,7 @@ function FriendSidebar({ className, ...props }) {
         </svg>
       </div>
       {listData.length > 0 ? (
-        <ListFriend ListData={listFilter} />
+        <ChatList ListData={listFilter} />
       ) : (
         <p>Don&apos;t have friend</p>
       )}
@@ -239,4 +313,4 @@ function FriendSidebar({ className, ...props }) {
   );
 }
 
-export default FriendSidebar;
+export default ChatSidebar;
