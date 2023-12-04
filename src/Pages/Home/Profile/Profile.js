@@ -11,7 +11,6 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 import { IconButton } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../../_helpers/authThunk";
-// import ErrorMsg from "../../../Components/ErrorMsg";
 import "./Profile.scss";
 
 function Profile({ user }) {
