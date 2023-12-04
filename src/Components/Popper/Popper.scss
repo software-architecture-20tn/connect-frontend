@@ -1,0 +1,30 @@
+.menu-list {
+  width: 200px;
+  background-color: var(--background-color);
+  border: 1px solid var(--shadow-color);
+  border-radius: 20px;
+  .popper-wrapper {
+    .menu-body {
+    }
+  }
+}
+
+.item-popper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  cursor: pointer;
+  width: 200px;
+  padding-left: 20px;
+  margin: 5px;
+  .title {
+    font-size: 14px;
+    margin: 0px 0 0px 5px;
+    padding: 5px;
+    flex: 1;
+  }
+}
+
+.item-popper:hover {
+  color: var(--text-hover-color);
+}
