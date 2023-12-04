@@ -41,13 +41,6 @@ function Profile({ user }) {
   const fileInputRef = useRef();
   const saveUserInfo = async (data) => {
     setIsLoading(true);
-    // const dataRequest = {
-    //   first_name: data.firstName,
-    //   last_name: data.lastName,
-    //   username: data.username,
-    //   bio: data.bio,
-    //   avatar: avatarFile,
-    // };
 
     const formData = new FormData();
     formData.append("first_name", data.firstName);
