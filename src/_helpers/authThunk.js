@@ -25,6 +25,6 @@ export const logIn = createAsyncThunk(
   },
 );
 
-export const logOut = async () => {
+export const logOut = createAsyncThunk("auth/logout", async () => {
   removeToken();
-};
+});

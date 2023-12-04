@@ -37,18 +37,18 @@ function Login() {
     if (authStates.isLogin) {
       toast.success("Login successful!", {
         position: "top-right",
-        autoClose: 1000,
+        autoClose: 5000,
         draggable: true,
         progress: undefined,
         theme: "light",
       });
       setTimeout(() => {
         navigate("/");
-      }, 1000);
+      }, 5000);
     } else if (authStates.error >= 400 && authStates.error < 500) {
       toast.error("Please recheck password and username", {
         position: "top-right",
-        autoClose: 1000,
+        autoClose: 5000,
         draggable: true,
         progress: undefined,
         theme: "light",
