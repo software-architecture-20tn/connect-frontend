@@ -1,22 +1,39 @@
-import React from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { fetchApi } from "../../api";
+import { Drawer } from "@mui/material";
+import "./Home.scss";
+import Profile from "./Profile";
+import { useDispatch } from "react-redux";
+import { logOut } from "../../_helpers/authThunk";
+function Home() {
+  const getUserInfo = () => fetchApi.get("/users/me/", "");
+  const [user, setUser] = useState(null);
+  const dispatch = useDispatch();
+  // const [drawerOpen, setDrawerOpen] = useState(true);
+  useEffect(() => {
+    const fetchUserData = async () => {
+      const response = await getUserInfo();
+      if (response.status === 401) {
+        dispatch(logOut());
+      }
+      const userData = await response.json();
+      setUser(userData);
+    };
 
-import MyButton from "../../Components/MyButton/MyButton";
-import { removeToken } from "../../_helpers/authHelpers";
+    fetchUserData();
+  }, []);
 
-function Home({ handleIsLogin }) {
-  const navigate = useNavigate();
-
-  const LogOut = () => {
-    removeToken();
-    handleIsLogin(false);
-    navigate("/login");
-  };
+  if (!user) {
+    return <p>Loading...</p>;
+  }
 
   return (
-    <div>
-      <p>Home</p>
-      <MyButton text="Log out" onClick={LogOut} />
+    <div className="home">
+      {user && (
+        <Drawer anchor="left" variant="permanent" className="home__drawer">
+          <Profile user={user} />
+        </Drawer>
+      )}
     </div>
   );
 }

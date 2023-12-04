@@ -1,20 +1,17 @@
-import React from "react";
+import React, { useEffect } from "react";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 import MyTextField from "../../Components/MyTextField/MyTextField";
 import "./Login.scss";
 import MyButton from "../../Components/MyButton/MyButton";
 // import { fetchApi } from "../../api/auth";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logIn } from "../../_helpers/authThunk";
-import { getToken } from "../../_helpers/authHelpers";
-
-function Login({ handleIsLogin }) {
+function Login() {
   const navigate = useNavigate();
 
   const schema = yup.object().shape({
@@ -22,8 +19,8 @@ function Login({ handleIsLogin }) {
     password: yup
       .string()
       .required("Password is required")
-      .min(8)
-      .matches(/^[a-zA-Z0-9_.-]*$/),
+      .min(8, "Password must be at least 8 characters.")
+      .matches(/^[a-zA-Z0-9_.-]*$/, "Password can only contain Latin letters."),
   });
 
   const {
@@ -35,14 +32,9 @@ function Login({ handleIsLogin }) {
   });
 
   const dispatch = useDispatch();
-  const onSubmit = async (data) => {
-    const dataRequest = {
-      email: data.email,
-      password: data.password,
-    };
-    await dispatch(logIn(dataRequest));
-    const token = getToken();
-    if (token !== null) {
+  const authStates = useSelector((state) => state.auth);
+  useEffect(() => {
+    if (authStates.isLogin) {
       toast.success("Login successful!", {
         position: "top-right",
         autoClose: 1000,
@@ -51,11 +43,28 @@ function Login({ handleIsLogin }) {
         theme: "light",
       });
       setTimeout(() => {
-        handleIsLogin(true);
         navigate("/");
       }, 1000);
+    } else if (authStates.error >= 400 && authStates.error < 500) {
+      toast.error("Please recheck password and username", {
+        position: "top-right",
+        autoClose: 1000,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
     }
+  }, [authStates]);
+
+  const onSubmit = async (data) => {
+    const dataRequest = {
+      email: data.email,
+      password: data.password,
+    };
+    console.log(dataRequest);
+    dispatch(logIn(dataRequest));
   };
+
   return (
     <div className="login">
       <ToastContainer />

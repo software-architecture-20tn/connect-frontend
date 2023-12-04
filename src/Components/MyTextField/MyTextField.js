@@ -1,6 +1,7 @@
 import { Controller } from "react-hook-form";
 import { TextField, FormControl } from "@mui/material";
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+// import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline";
+import ErrorMsg from "../ErrorMsg";
 import "./MyTextField.scss";
 import React from "react";
 
@@ -22,7 +23,10 @@ function MyTextField({
       control={control}
       defaultValue={initialValue}
       render={({ field }) => (
-        <FormControl style={{ width: textWidth }}>
+        <FormControl
+          style={{ width: textWidth }}
+          className={`${className} form-control`}
+        >
           <TextField
             {...field}
             className={`${className} text-field`}
@@ -30,14 +34,14 @@ function MyTextField({
             label={label}
             error={errorMsg !== null}
             fullWidth
+            onBlur={(e) => {
+              if (e.target.value === "") {
+                field.onChange({ target: { value: initialValue } });
+              }
+            }}
             {...props}
           />
-          {errorMsg && (
-            <p className="error">
-              <ErrorOutlineIcon className="error__icon" />
-              <span className="error__message">{errorMsg}</span>
-            </p>
-          )}
+          {errorMsg && <ErrorMsg errorMsg={errorMsg} className="error" />}
         </FormControl>
       )}
     />

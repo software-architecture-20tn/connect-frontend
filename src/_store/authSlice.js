@@ -1,8 +1,10 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { logIn, logOut } from "../_helpers/authThunk";
-
+import { getToken } from "../_helpers/authHelpers";
 const initialState = {
-  token: null,
+  token: getToken(),
+  error: null,
+  isLogin: getToken() !== null,
 };
 
 const authSlice = createSlice({
@@ -12,9 +14,23 @@ const authSlice = createSlice({
   extraReducers: {
     [logIn.fulfilled]: (state, action) => {
       state.token = action.payload.token;
+      state.error = null;
+      state.isLogin = true;
+    },
+    [logIn.rejected]: (state, action) => {
+      state.error = action.payload;
+      state.isLogin = false;
+      state.token = null;
     },
     [logOut.fulfilled]: (state, action) => {
       state.token = null;
+      state.error = null;
+      state.isLogin = false;
+    },
+    [logOut.rejected]: (state, action) => {
+      state.error = action.error.message;
+      state.token = null;
+      state.isLogin = false;
     },
   },
 });
