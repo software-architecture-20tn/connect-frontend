@@ -54,7 +54,6 @@ function Login() {
         theme: "light",
       });
     }
-    // console.log("dit me con cho sua con cac may ngu vai lon", user);
   }, [authStates]);
 
   const onSubmit = async (data) => {
