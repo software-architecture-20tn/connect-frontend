@@ -113,9 +113,6 @@ function Profile({ user }) {
           className="profile__container__avatar"
           onClick={handleAvatarClick}
         />
-        {/* {avatarFile && !avatarFile.type.startsWith("image/") && (
-          <ErrorMsg errorMsg="Please upload image file" />
-        )} */}
         <form
           onSubmit={handleSubmit(saveUserInfo)}
           className="profile__container__form"
