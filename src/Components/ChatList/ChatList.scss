@@ -38,7 +38,7 @@
 .chatlist__item:first-child {
   margin-top: 0;
 }
-.avatar {
+.avatar-chatlist {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -46,7 +46,7 @@
   margin-right: 20px;
   position: relative;
 }
-.avatar img {
+.avatar-chatlist img {
   max-width: 100%;
   object-fit: cover;
 }
@@ -79,12 +79,12 @@
   position: absolute;
   bottom: 0;
   right: 0;
-  background-color: #ddd;
+  background-color: #ee1313;
   border-radius: 50%;
   border: 2px solid #fff;
 }
 .isOnline.active {
-  background-color: tomato;
+  background-color: rgb(70, 233, 25);
 }
 .avatar-img {
   overflow: hidden;

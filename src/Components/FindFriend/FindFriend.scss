@@ -1,0 +1,93 @@
+.findfriend-wrapper {
+  background-color: var(--background-color) !important;
+  width: 350px;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .header {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+
+    p {
+      width: 160px;
+      font-size: 20px;
+      font-weight: 600;
+      color: var(--text-color);
+      margin-right: 15px;
+    }
+
+    .back-icon {
+      width: 20px;
+      height: 20px;
+      padding: 10px;
+      border-radius: 10px;
+    }
+
+    .back-icon:hover {
+      color: var(--text-color-light);
+      background: rgb(191, 191, 191);
+      cursor: pointer;
+    }
+  }
+
+  .search-box {
+    color: var(--text-color);
+    position: relative;
+    display: flex;
+    align-items: center;
+
+    margin-bottom: 20px;
+
+    .search-icon {
+      position: absolute;
+      top: 50%;
+      left: 5px;
+      transform: translateY(-50%);
+      color: var(--text-color-light);
+    }
+
+    .search-input {
+      width: 220px;
+      height: 25px;
+      padding: 5px;
+      padding-left: 30px;
+      border-radius: 10px;
+      border: 1px solid #ffff;
+      outline: none;
+      background-color: var(--alternate-background-colour);
+    }
+
+    .search-add-icon {
+      margin-left: 5px;
+    }
+
+    .search-add-icon:hover {
+      color: var(--text-color-light);
+      cursor: pointer;
+    }
+  }
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

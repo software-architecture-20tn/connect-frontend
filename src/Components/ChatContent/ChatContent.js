@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
@@ -57,42 +57,42 @@ const DEMO_DATA = [
     msg: "I'm taliking about the tutorial",
   },
   {
-    key: 2,
+    key: 8,
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
     type: "other",
     msg: "I am fine.",
   },
   {
-    key: 3,
+    key: 9,
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
     type: "other",
     msg: "What about you?",
   },
   {
-    key: 4,
+    key: 10,
     image:
       "https://pbs.twimg.com/profile_images/1116431270697766912/-NfnQHvh_400x400.jpg",
     type: "",
     msg: "Awesome these days.",
   },
   {
-    key: 5,
+    key: 11,
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
     type: "other",
     msg: "Finally. What's the plan?",
   },
   {
-    key: 6,
+    key: 12,
     image:
       "https://pbs.twimg.com/profile_images/1116431270697766912/-NfnQHvh_400x400.jpg",
     type: "",
     msg: "what plan mate?",
   },
   {
-    key: 7,
+    key: 13,
     image:
       "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
     type: "other",
@@ -101,6 +101,37 @@ const DEMO_DATA = [
 ];
 
 function ChatContent({ className, ...props }) {
+  const messagesRef = useRef(null);
+  const [contentMessage, setContentMessage] = useState(DEMO_DATA);
+  const [message, setMessage] = useState("");
+
+  useEffect(() => {
+    console.log("Scroll");
+    messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+  }, [contentMessage]);
+
+  const handleKeyPress = (e) => {
+    // Khi nhấn phím "Enter"
+    if (e.key === "Enter") {
+      e.preventDefault();
+      handleSendMessage();
+    }
+  };
+
+  const handleSendMessage = () => {
+    if (message.trim() !== "") {
+      const newMessage = {
+        key: 1,
+        image:
+          "https://pbs.twimg.com/profile_images/1116431270697766912/-NfnQHvh_400x400.jpg",
+        type: "",
+        msg: message,
+      };
+      setContentMessage((prev) => [...prev, newMessage]);
+    }
+    setMessage("");
+  };
+
   return (
     <div className="main__chatcontent">
       <div className="content__header">
@@ -114,13 +145,13 @@ function ChatContent({ className, ...props }) {
           </div>
         </div>
       </div>
-      <div className="content__body">
+      <div className="content__body" ref={messagesRef}>
         <div className="chat__items">
-          {DEMO_DATA.map((itm, index) => {
+          {contentMessage.map((itm, index) => {
             return (
               <ChatItem
                 animationDelay={index + 2}
-                key={itm.key}
+                key={index}
                 user={itm.type ? itm.type : "me"}
                 msg={itm.msg}
                 image={itm.image}
@@ -138,10 +169,17 @@ function ChatContent({ className, ...props }) {
           <input
             type="text"
             placeholder="Type a message here"
-            // onChange={this.onStateChange}
-            // value={this.state.msg}
+            onChange={(e) => {
+              setMessage(e.target.value);
+            }}
+            value={message}
+            onKeyPress={handleKeyPress}
           />
-          <button className="btnSendMsg" id="sendMsgBtn">
+          <button
+            className="btnSendMsg"
+            id="sendMsgBtn"
+            onClick={handleSendMessage}
+          >
             <FontAwesomeIcon icon={faPaperPlane} />
           </button>
         </div>

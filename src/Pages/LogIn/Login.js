@@ -8,7 +8,6 @@ import "react-toastify/dist/ReactToastify.css";
 import MyTextField from "../../Components/MyTextField/MyTextField";
 import "./Login.scss";
 import MyButton from "../../Components/MyButton/MyButton";
-// import { fetchApi } from "../../api/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { logIn } from "../../_helpers/authThunk";
 function Login() {
@@ -37,18 +36,18 @@ function Login() {
     if (authStates.isLogin) {
       toast.success("Login successful!", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1000,
         draggable: true,
         progress: undefined,
         theme: "light",
       });
       setTimeout(() => {
         navigate("/");
-      }, 5000);
+      }, 1000);
     } else if (authStates.error >= 400 && authStates.error < 500) {
       toast.error("Please recheck password and username", {
         position: "top-right",
-        autoClose: 5000,
+        autoClose: 1000,
         draggable: true,
         progress: undefined,
         theme: "light",
