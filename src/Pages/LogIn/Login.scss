@@ -24,6 +24,7 @@
             margin: 20px;
             color: var(--text-color);
         }
+
         &__greeting {
             font-family: var(--bs-font-sans-serif);
             margin: 20px;
@@ -31,10 +32,21 @@
         }
 
     }
-    .link_to_signup{
+
+    .link_to_signup {
         text-decoration: none;
         font-size: 14px;
         margin: 7px;
         color: var(--text-color);
+    }
+
+    .link-to-forgot-password {
+        margin: auto;
+        align-self: flex-end;
+        bottom: 0px;
+        right: 0px;
+        text-decoration: none;
+        color: #2f17ce;
+        font-size: 14px;
     }
 }
