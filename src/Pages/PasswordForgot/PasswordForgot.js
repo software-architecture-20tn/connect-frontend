@@ -10,8 +10,6 @@ import { resetPassword } from "./helper";
 
 function PasswordForgot() {
   // eslint-disable-next-line
-  const [email, setEmail] = useState(""); // Destructuring the array correctly
-  // eslint-disable-next-line
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
 
   const schema = yup.object().shape({
