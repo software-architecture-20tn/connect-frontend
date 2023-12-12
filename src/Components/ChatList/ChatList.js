@@ -14,7 +14,7 @@ function ChatList({ ListData, className, ...props }) {
             animationDelay={index + 1}
             active={item.id === 1 ? "active" : ""}
             isOnline={item.isOnline ? "active" : ""}
-            data={item.data}
+            data={item}
           />
         );
       })}
