@@ -8,7 +8,6 @@ import "react-toastify/dist/ReactToastify.css";
 import MyTextField from "../../Components/MyTextField/MyTextField";
 import "./Login.scss";
 import MyButton from "../../Components/MyButton/MyButton";
-// import { fetchApi } from "../../api/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { logIn } from "../../_helpers/authThunk";
 function Login() {

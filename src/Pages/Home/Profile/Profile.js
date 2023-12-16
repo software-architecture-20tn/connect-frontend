@@ -13,7 +13,7 @@ import { useDispatch } from "react-redux";
 import { logOut } from "../../../_helpers/authThunk";
 import "./Profile.scss";
 
-function Profile({ user }) {
+function Profile({ user, setSidebarOpen }) {
   const schema = yup.object().shape({
     firstName: yup.string(),
     lastName: yup.string(),
@@ -85,7 +85,12 @@ function Profile({ user }) {
   ) : (
     <div className="profile">
       <div className="profile__btns">
-        <IconButton className="profile__btns__icon">
+        <IconButton
+          className="profile__btns__icon"
+          onClick={() => {
+            setSidebarOpen("listFriend");
+          }}
+        >
           <ArrowBackIosIcon
             className="profile__btns__back"
             color="primary"
