@@ -91,6 +91,9 @@ function Login() {
         <Link className="link_to_signup" to="/register">
           Đăng ký
         </Link>
+        <Link className="link-to-forgot-password" to="/forgot-password">
+          Forgot password
+        </Link>
       </form>
     </div>
   );
