@@ -1,0 +1,83 @@
+.profile {
+    
+    
+
+    .header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+
+        p {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--text-color);
+            
+        }
+      
+        .back-icon {
+            width: 20px;
+            height: 20px;
+            padding: 10px;
+            border-radius: 10px;
+        }
+      
+        .back-icon:hover {
+            color: var(--text-color-light);
+            background: rgb(191, 191, 191);
+            cursor: pointer;
+        }
+
+        .logout-icon {
+            width: 20px;
+            height: 20px;
+            padding: 10px;
+            border-radius: 10px;
+        }
+      
+        .logout-icon:hover {
+            color: var(--text-color-light);
+            background: rgb(191, 191, 191);
+            cursor: pointer;
+        }
+    }
+
+    &__container {
+        background-color: var(--background-color);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 80vh;
+
+
+        &__form {
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 85%;
+            background-color: var(--background-color);
+
+            &__bio {
+                margin-bottom: 100px;
+
+                .MuiFormControl-root {
+                    margin-bottom: 60px;
+                }
+            }
+
+        }
+    }
+
+
+
+
+}
+
+
+
+.avatar {
+    width: 100px;
+    height: 100px;
+}

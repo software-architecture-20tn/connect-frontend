@@ -1,17 +1,20 @@
 import React, { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import MyTextField from "../../../Components/MyTextField";
 import { yupResolver } from "@hookform/resolvers/yup";
-import MyButton from "../../../Components/MyButton/MyButton";
-import { fetchApi } from "../../../api";
-import Avatar from "../../../Components/Avatar";
-import LogoutIcon from "@mui/icons-material/Logout";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { IconButton } from "@mui/material";
+import MyButton from "../MyButton";
+import MyTextField from "../MyTextField";
+import { fetchApi } from "../../api";
+import Avatar from "../Avatar";
 import { useDispatch } from "react-redux";
-import { logOut } from "../../../_helpers/authThunk";
+import { logOut } from "../../_helpers/authThunk";
 import "./Profile.scss";
+import LoadingSpinner from "../LoadingSpinner";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faChevronLeft,
+  faArrowRightFromBracket,
+} from "@fortawesome/free-solid-svg-icons";
 
 function Profile({ user, setSidebarOpen }) {
   const schema = yup.object().shape({
@@ -46,7 +49,7 @@ function Profile({ user, setSidebarOpen }) {
     formData.append("last_name", data.lastName);
     formData.append("username", data.username);
     formData.append("bio", data.bio);
-    formData.append("avatar", avatarFile);
+    if (avatarFile) formData.append("avatar", avatarFile);
     for (const pair of formData.entries()) {
       console.log(pair[0] + ", " + pair[1]);
     }
@@ -81,29 +84,25 @@ function Profile({ user, setSidebarOpen }) {
     fileInputRef.current.click();
   };
   return isLoading ? (
-    <p>Loading...</p>
+    <LoadingSpinner />
   ) : (
     <div className="profile">
-      <div className="profile__btns">
-        <IconButton
-          className="profile__btns__icon"
+      <div className="header">
+        <FontAwesomeIcon
+          className="back-icon"
+          icon={faChevronLeft}
           onClick={() => {
             setSidebarOpen("listFriend");
           }}
-        >
-          <ArrowBackIosIcon
-            className="profile__btns__back"
-            color="primary"
-            fontSize="large"
-          />
-        </IconButton>
-        <IconButton onClick={handleLogout} className="profile__btns__icon">
-          <LogoutIcon
-            className="profile__btns__logout"
-            color="primary"
-            fontSize="large"
-          />
-        </IconButton>
+        />
+        <p>Your Profile</p>
+        <FontAwesomeIcon
+          className="logout-icon"
+          icon={faArrowRightFromBracket}
+          onClick={() => {
+            handleLogout();
+          }}
+        />
       </div>
       <div className="profile__container">
         <input

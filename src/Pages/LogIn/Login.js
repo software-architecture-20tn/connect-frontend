@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
@@ -10,16 +10,13 @@ import "./Login.scss";
 import MyButton from "../../Components/MyButton/MyButton";
 import { useDispatch, useSelector } from "react-redux";
 import { logIn } from "../../_helpers/authThunk";
+import LoadingSpinner from "../../Components/LoadingSpinner";
 function Login() {
   const navigate = useNavigate();
 
   const schema = yup.object().shape({
-    email: yup.string().email().required("Email is required"),
-    password: yup
-      .string()
-      .required("Password is required")
-      .min(8, "Password must be at least 8 characters.")
-      .matches(/^[a-zA-Z0-9_.-]*$/, "Password can only contain Latin letters."),
+    email: yup.string().email().required("Please enter email"),
+    password: yup.string().required("Please enter your password"),
   });
 
   const {
@@ -32,6 +29,7 @@ function Login() {
 
   const dispatch = useDispatch();
   const authStates = useSelector((state) => state.auth);
+  const [isLoading, setIsLoading] = useState(false);
   useEffect(() => {
     if (authStates.isLogin) {
       toast.success("Login successful!", {
@@ -56,6 +54,7 @@ function Login() {
   }, [authStates]);
 
   const onSubmit = async (data) => {
+    setIsLoading(true);
     const dataRequest = {
       email: data.email,
       password: data.password,
@@ -66,8 +65,12 @@ function Login() {
 
   return (
     <div className="login">
+      {isLoading && <LoadingSpinner className="loading" />}
       <ToastContainer />
-      <form className="login__form" onSubmit={handleSubmit(onSubmit)}>
+      <form
+        className={`login__form ${isLoading ? "blur" : ""}`}
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <label className="login__form__title">Login</label>
         <label className="login__form__greeting">Welcome back</label>
         <MyTextField

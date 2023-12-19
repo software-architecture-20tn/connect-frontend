@@ -84,7 +84,7 @@ function ChatSidebar({ className, ...props }) {
 
   const handleMenuChange = (menuItem) => {
     switch (menuItem.type) {
-      case "setting":
+      case "Profile":
         props.setSidebarOpen("profile");
         break;
       case "findFriends":
