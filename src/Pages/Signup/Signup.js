@@ -25,8 +25,8 @@ function Signup() {
     password: yup
       .string()
       .required("Password is required")
-      .min(8)
-      .matches(/^[a-zA-Z0-9_.-]*$/),
+      .min(8, "Password should be at least 8 characters")
+      .matches(/^\S+$/, "Password should not contain space"),
     passwordConfirm: yup
       .string()
       .oneOf([yup.ref("password"), null], "Passwords must match")

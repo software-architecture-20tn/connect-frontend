@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { fetchApi } from "../../api";
 import { Drawer } from "@mui/material";
 import "./Home.scss";
-import Profile from "./Profile";
+import Profile from "../../Components/Profile";
 import ChatSidebar from "../../Components/ChatSidebar";
 import FindFriend from "../../Components/FindFriend";
 import ChatContent from "../../Components/ChatContent";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../_helpers/authThunk";
+import LoadingSpinner from "../../Components/LoadingSpinner";
 function Home() {
   const getUserInfo = () => fetchApi.get("/users/me/", "");
   const [user, setUser] = useState(null);
@@ -28,7 +29,7 @@ function Home() {
   }, []);
 
   if (!user) {
-    return <p>Loading...</p>;
+    return <LoadingSpinner />;
   }
 
   let Sidebar;

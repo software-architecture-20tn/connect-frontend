@@ -1,0 +1,20 @@
+.loading-spinner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.5); // Optional: This will give a white overlay effect
+    z-index: 1000;
+
+    &__circular {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+}
+
+.blur {
+    filter: blur(5px);
+}
