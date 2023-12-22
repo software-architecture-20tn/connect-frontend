@@ -1,5 +1,5 @@
 import Home from "../Pages/Home";
-import Login from "../Pages/Login";
+import Login from "../Pages/LogIn";
 import Signup from "../Pages/Signup";
 import PasswordForgot from "../Pages/PasswordForgot";
 import PasswordForgotConfirm from "../Pages/PasswordForgotConfirm/PasswordForgotConfirm";
