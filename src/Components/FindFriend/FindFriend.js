@@ -14,7 +14,8 @@ function FindFriend({ className, setSidebarOpen, ...props }) {
   const debouncedValue = useDebounce(searchValue, 500);
 
   const handleFindFriends = async () => {
-    const findFriends = () => fetchApi.get("/users/users/search/?username=tin");
+    const findFriends = () =>
+      fetchApi.get(`/users/users/search/?keyword=${debouncedValue}`);
     try {
       const response = await findFriends();
       const data = await response.json();
@@ -71,7 +72,7 @@ function FindFriend({ className, setSidebarOpen, ...props }) {
         />
       </div>
       {listFilter.length > 0 ? (
-        <ChatList ListData={listFilter} />
+        <ChatList ListData={listFilter} addFriend={true} />
       ) : (
         <p>Find friends</p>
       )}

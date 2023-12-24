@@ -15,6 +15,7 @@ function ChatList({ ListData, className, ...props }) {
             active={item.id === 1 ? "active" : ""}
             isOnline={item.isOnline ? "active" : ""}
             data={item}
+            addFriend={props.addFriend}
           />
         );
       })}
