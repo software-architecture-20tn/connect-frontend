@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { fetchApi } from "../../api";
 import { Drawer } from "@mui/material";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "./Home.scss";
 import Profile from "../../Components/Profile";
 import ChatSidebar from "../../Components/ChatSidebar";
@@ -47,6 +49,7 @@ function Home() {
 
   return (
     <div className="home">
+      <ToastContainer />
       {user && (
         <Drawer anchor="left" variant="permanent" className="home__drawer">
           {Sidebar}
