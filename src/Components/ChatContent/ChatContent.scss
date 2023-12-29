@@ -22,7 +22,7 @@
   align-items: center;
 }
 .settings .btn-nobg {
-  color: #000;
+  color: var(--text-color);
 }
 .content__body {
   max-height: calc(100vh - calc(100vh / 4));
@@ -91,7 +91,7 @@
 }
 .chat__item.other .chat__item__content {
   background-color: #fff;
-  color: #000;
+  color: var(--text-color);
   border-radius: 10px 10px 10px 0;
   max-width: 50%;
 }
