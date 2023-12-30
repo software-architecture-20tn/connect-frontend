@@ -49,7 +49,7 @@ const DEMO_DATA = [
     receiver: 0,
     group: 0,
     time: "2023-12-28T13:05:26.564Z",
-    content: "Nội dung hôm nay gửi đến các bạn trẻ ở hồ chí minh là như này nè",
+    content: "Nội dung hôm nay gửi đến các bạn trẻ ở Hồ Chí Minh là như này nè",
     media: "string",
     avatar: null,
     conversation_name: "Nhóm các bạn đồng hương Hồ Chí Minh",
