@@ -59,7 +59,7 @@ const MENU_ITEMS = [
 ];
 
 function ChatSidebar({ className, ...props }) {
-  const getListFriends = () => fetchApi.get("/users/friends/");
+  const getListChats = () => fetchApi.get("/conversations/conversations/");
   const [listData, setListData] = useState([]);
   const [listFilter, setListFilter] = useState([]);
   const [searchValue, setSearchValue] = useState("");
@@ -69,7 +69,7 @@ function ChatSidebar({ className, ...props }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await getListFriends();
+        const response = await getListChats();
         const data = await response.json();
         console.log(data);
         setListData(DEMO_DATA);
@@ -103,11 +103,10 @@ function ChatSidebar({ className, ...props }) {
       setListFilter(listData);
       return;
     }
-    const filtered = listData.filter(
-      (friend) =>
-        friend.first_name.toLowerCase().includes(searchValue.toLowerCase()) ||
-        friend.last_name.toLowerCase().includes(searchValue.toLowerCase()) ||
-        friend.username.toLowerCase().includes(searchValue.toLowerCase()),
+    const filtered = listData.filter((friend) =>
+      friend.conversation_name
+        .toLowerCase()
+        .includes(searchValue.toLowerCase()),
     );
     setListFilter(filtered);
   }, [debouncedValue]);

@@ -1,10 +1,11 @@
-.chatlist__items {
+.friendslist__items {
   width: 80%;
   margin-top: 5px;
   max-height: calc(100vh - calc(100vh / 2));
+
 }
 
-.chatlist__item {
+.friendslist__item {
   width: 80%;
   display: flex;
   border-bottom: 1px solid #ebe7fb;
@@ -28,6 +29,9 @@
   animation-delay: 0.1s; /* or: Xms */
 
   .userMeta{
+    max-width: 145px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
     overflow: hidden;
     margin-bottom: 2px;
     flex: 1;
@@ -45,8 +49,6 @@
       -webkit-line-clamp: 1;
       text-align: left;
     }
-
-    
   }
 }
 @keyframes showIn {
@@ -57,10 +59,10 @@
     transform: scale(1);
   }
 }
-.chatlist__item:first-child {
+.friendslist__item:first-child {
   margin-top: 0;
 }
-.avatar-chatlist {
+.avatar-friendslist {
   width: 40px;
   height: 40px;
   border-radius: 50%;
@@ -68,19 +70,19 @@
   margin-right: 20px;
   position: relative;
 }
-.avatar-chatlist img {
+.avatar-friendslist img {
   max-width: 100%;
   object-fit: cover;
 }
 
-.chatlist__item .userMeta p {
+.friendslist__item .userMeta p {
   margin: 0;
   padding: 0;
-  color: var(--text-color);
+  color: #000;
   font-weight: 600;
   font-size: 14px;
 }
-.chatlist__item .userMeta span {
+.friendslist__item .userMeta span {
   margin: 0;
   padding: 0;
   color: #7c7c7c;
@@ -88,8 +90,8 @@
   font-size: 12px;
   display: block;
 }
-.chatlist__item:hover,
-.chatlist__item.active {
+.friendslist__item:hover,
+.friendslist__item.active {
   background: #f0f0f0;
 
   border-radius: 10px;

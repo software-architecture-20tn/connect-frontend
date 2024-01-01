@@ -4,7 +4,7 @@ import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import "tippy.js/dist/tippy.css";
 
 import "./FindFriend.scss";
-import ChatList from "../ChatList";
+import FriendsList from "../FriendsList";
 import { useDebounce } from "../../hooks";
 import { fetchApi } from "../../api";
 
@@ -72,7 +72,7 @@ function FindFriend({ className, setSidebarOpen, ...props }) {
         />
       </div>
       {listFilter.length > 0 ? (
-        <ChatList ListData={listFilter} addFriend={true} />
+        <FriendsList ListData={listFilter} addFriend={true} />
       ) : (
         <p>Find friends</p>
       )}

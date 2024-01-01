@@ -1,12 +1,12 @@
 import React from "react";
 import "tippy.js/dist/tippy.css";
 
-import "./ChatList.scss";
-import ChatListItem from "./ChatListItem";
+import "./FriendsList.scss";
+import ChatListItem from "./FriendsListItem";
 
-function ChatList({ ListData, className, ...props }) {
+function FriendsList({ ListData, className, ...props }) {
   return (
-    <div className="chatlist__items">
+    <div className="friendslist__items">
       {ListData.map((item, index) => {
         return (
           <ChatListItem
@@ -15,6 +15,7 @@ function ChatList({ ListData, className, ...props }) {
             active={item.id === 1 ? "active" : ""}
             isOnline={item.isOnline ? "active" : ""}
             data={item}
+            addFriend={props.addFriend}
           />
         );
       })}
@@ -22,4 +23,4 @@ function ChatList({ ListData, className, ...props }) {
   );
 }
 
-export default ChatList;
+export default FriendsList;
