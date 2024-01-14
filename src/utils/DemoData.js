@@ -1,8 +1,8 @@
 const DEMO_DATA = [
   {
     id: 0,
-    sender: 0,
-    receiver: 0,
+    sender: 1,
+    receiver: 2,
     group: 0,
     time: "2023-12-28T13:05:26.564Z",
     content: "Nội dung hôm nay",
@@ -12,8 +12,8 @@ const DEMO_DATA = [
   },
   {
     id: 1,
-    sender: 0,
-    receiver: 0,
+    sender: 2,
+    receiver: 3,
     group: 0,
     time: "2023-12-28T13:05:26.564Z",
     content: "Nội dung hôm nay",
@@ -23,8 +23,8 @@ const DEMO_DATA = [
   },
   {
     id: 2,
-    sender: 0,
-    receiver: 0,
+    sender: 3,
+    receiver: 5,
     group: 0,
     time: "2023-12-28T13:05:26.564Z",
     content: "Nội dung hôm nay",
@@ -34,8 +34,8 @@ const DEMO_DATA = [
   },
   {
     id: 3,
-    sender: 0,
-    receiver: 0,
+    sender: 1,
+    receiver: 5,
     group: 0,
     time: "2023-12-28T13:05:26.564Z",
     content: "Nội dung hôm nay gồm các thông tin abc def",
@@ -45,8 +45,8 @@ const DEMO_DATA = [
   },
   {
     id: 4,
-    sender: 0,
-    receiver: 0,
+    sender: 2,
+    receiver: 5,
     group: 0,
     time: "2023-12-28T13:05:26.564Z",
     content: "Nội dung hôm nay gửi đến các bạn trẻ ở Hồ Chí Minh là như này nè",

@@ -18,7 +18,7 @@ import Popper from "../Popper";
 import { logOut } from "../../_helpers/authThunk";
 import { useDebounce } from "../../hooks";
 import { fetchApi } from "../../api";
-import { DEMO_DATA } from "../../utils/DemoData";
+// import { DEMO_DATA } from "../../utils/DemoData";
 
 const MENU_ITEMS = [
   {
@@ -66,20 +66,28 @@ function ChatSidebar({ className, ...props }) {
   const debouncedValue = useDebounce(searchValue, 500);
   const dispatch = useDispatch();
 
+  const fetchData = async () => {
+    try {
+      const response = await getListChats();
+      const data = await response.json();
+      setListData(data);
+      setListFilter(data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await getListChats();
-        const data = await response.json();
-        console.log(data);
-        setListData(DEMO_DATA);
-        setListFilter(DEMO_DATA);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+    const checkMessages = async () => {
+      fetchData();
     };
 
     fetchData();
+    const intervalId = setInterval(checkMessages, 5000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
   }, []);
 
   const handleMenuChange = (menuItem) => {
@@ -169,7 +177,11 @@ function ChatSidebar({ className, ...props }) {
         </svg>
       </div>
       {listData.length > 0 ? (
-        <ChatList ListData={listFilter} />
+        <ChatList
+          ListData={listFilter}
+          infoChatContent={props.infoChatContent}
+          setInfoChatContent={props.setInfoChatContent}
+        />
       ) : (
         <p>Don&apos;t have friend</p>
       )}

@@ -16,6 +16,11 @@ function Home() {
   const [user, setUser] = useState(null);
   const dispatch = useDispatch();
   const [sidebarOpen, setSidebarOpen] = useState("listFriend");
+  const [infoChatContent, setInfoChatContent] = useState({
+    sender: null,
+    receiver: null,
+    group: null,
+  });
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -25,6 +30,18 @@ function Home() {
       }
       const userData = await response.json();
       setUser(userData);
+      setInfoChatContent((prev) => ({
+        ...prev,
+        sender: {
+          id: userData.id,
+          first_name: userData.first_name,
+          last_name: userData.last_name,
+          email: userData.email,
+          date_of_birth: userData.date_of_birth,
+          avatar: userData.avatar,
+          username: userData.username,
+        },
+      }));
     };
 
     fetchUserData();
@@ -37,7 +54,13 @@ function Home() {
   let Sidebar;
   switch (sidebarOpen) {
     case "listFriend":
-      Sidebar = <ChatSidebar setSidebarOpen={setSidebarOpen} />;
+      Sidebar = (
+        <ChatSidebar
+          setSidebarOpen={setSidebarOpen}
+          infoChatContent={infoChatContent}
+          setInfoChatContent={setInfoChatContent}
+        />
+      );
       break;
     case "profile":
       Sidebar = <Profile user={user} setSidebarOpen={setSidebarOpen} />;
@@ -55,7 +78,7 @@ function Home() {
           {Sidebar}
         </Drawer>
       )}
-      <ChatContent />
+      <ChatContent user={user} infoChatContent={infoChatContent} />
     </div>
   );
 }

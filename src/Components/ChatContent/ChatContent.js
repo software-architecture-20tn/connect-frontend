@@ -1,189 +1,250 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
 
+import { fetchApi } from "../../api";
 import Avatar from "../ChatList/Avatar";
 import ChatItem from "./ChatItem";
 import "./ChatContent.scss";
 
-const DEMO_DATA = [
-  {
-    key: 1,
-    image:
-      "https://pbs.twimg.com/profile_images/1116431270697766912/-NfnQHvh_400x400.jpg",
-    type: "",
-    msg: "Hi Tim, How are you?",
-  },
-  {
-    key: 2,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
-    type: "other",
-    msg: "I am fine.",
-  },
-  {
-    key: 3,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
-    type: "other",
-    msg: "What about you?",
-  },
-  {
-    key: 4,
-    image:
-      "https://pbs.twimg.com/profile_images/1116431270697766912/-NfnQHvh_400x400.jpg",
-    type: "",
-    msg: "Awesome these days.",
-  },
-  {
-    key: 5,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
-    type: "other",
-    msg: "Finally. What's the plan?",
-  },
-  {
-    key: 6,
-    image:
-      "https://pbs.twimg.com/profile_images/1116431270697766912/-NfnQHvh_400x400.jpg",
-    type: "",
-    msg: "what plan mate?",
-  },
-  {
-    key: 7,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
-    type: "other",
-    msg: "I'm taliking about the tutorial",
-  },
-  {
-    key: 8,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
-    type: "other",
-    msg: "I am fine.",
-  },
-  {
-    key: 9,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
-    type: "other",
-    msg: "What about you?",
-  },
-  {
-    key: 10,
-    image:
-      "https://pbs.twimg.com/profile_images/1116431270697766912/-NfnQHvh_400x400.jpg",
-    type: "",
-    msg: "Awesome these days.",
-  },
-  {
-    key: 11,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
-    type: "other",
-    msg: "Finally. What's the plan?",
-  },
-  {
-    key: 12,
-    image:
-      "https://pbs.twimg.com/profile_images/1116431270697766912/-NfnQHvh_400x400.jpg",
-    type: "",
-    msg: "what plan mate?",
-  },
-  {
-    key: 13,
-    image:
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU",
-    type: "other",
-    msg: "I'm taliking about the tutorial",
-  },
-];
-
 function ChatContent({ className, ...props }) {
+  const getChatContent = (apiGetContent) => {
+    return fetchApi.get(apiGetContent, "");
+  };
+  const sendDirectMessages = (dataRequest) => {
+    return fetchApi.post("/conversations/direct-messages/create/", dataRequest);
+  };
   const messagesRef = useRef(null);
-  const [contentMessage, setContentMessage] = useState(DEMO_DATA);
+  const [contentMessage, setContentMessage] = useState(null);
   const [message, setMessage] = useState("");
 
+  // Load Start Chat Content
+  const loadStartChatContent = async () => {
+    const receiverId =
+      props.infoChatContent.receiver && props.infoChatContent.receiver.id;
+    if (receiverId) {
+      const response = await getChatContent(
+        `/conversations/direct-messages/${receiverId}/?limit=8&offset=0`,
+      );
+      const data = await response.json();
+      setContentMessage({
+        count: data.count,
+        results: data.results,
+      });
+    }
+  };
   useEffect(() => {
-    console.log("Scroll");
-    messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
-  }, [contentMessage]);
+    loadStartChatContent();
+  }, [props.infoChatContent.receiver]);
 
+  // Handle when update messages
+  const fetchChatContent = useMemo(() => {
+    const receiverId =
+      props.infoChatContent.receiver && props.infoChatContent.receiver.id;
+    const curID = contentMessage && contentMessage.results[0].id;
+    return async () => {
+      if (receiverId) {
+        const response = await getChatContent(
+          `/conversations/direct-messages/${receiverId}/?limit=8&offset=0`,
+        );
+        const data = await response.json();
+        // setApiGetOldContent(data.next);
+        if (contentMessage !== null) {
+          const idxSmaller = data.results.findIndex((item) => item.id <= curID);
+          if (data.results.slice(0, idxSmaller).length > 0) {
+            setContentMessage((prev) => {
+              return {
+                count: data.count,
+                results: [
+                  ...data.results.slice(0, idxSmaller),
+                  ...prev.results,
+                ],
+              };
+            });
+          }
+        } else {
+          setContentMessage({
+            count: data.count,
+            results: data.results,
+          });
+        }
+      }
+    };
+  }, [props.infoChatContent, contentMessage]);
+
+  useEffect(() => {
+    if (messagesRef.current && contentMessage) {
+      if (
+        messagesRef.current.scrollHeight - messagesRef.current.scrollTop <=
+        830
+      ) {
+        messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+      }
+      if (
+        props.infoChatContent.sender.id === contentMessage.results[0].sender
+      ) {
+        messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
+      }
+    }
+  }, [props.infoChatContent.receiver, messagesRef.current, contentMessage]);
+
+  useEffect(() => {
+    const handleLoop = () => {
+      fetchChatContent();
+    };
+    const intervalId = setInterval(handleLoop, 5000);
+
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [fetchChatContent]);
+
+  // Handle load old chat
+  const loadOldChatContent = async (offset, curID) => {
+    const receiverId = props.infoChatContent.receiver.id;
+    const response = await getChatContent(
+      `/conversations/direct-messages/${receiverId}/?limit=8&offset=${offset}`,
+    );
+    const data = await response.json();
+    const idxSmaller = data.results.findIndex((item) => item.id < curID);
+    setContentMessage((prev) => {
+      return {
+        count: data.count,
+        results: [...prev.results, ...data.results.slice(idxSmaller)],
+      };
+    });
+  };
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollTop = messagesRef.current.scrollTop;
+      if (
+        scrollTop === 0 &&
+        contentMessage.results.length < contentMessage.count
+      ) {
+        loadOldChatContent(
+          contentMessage.results.length,
+          contentMessage.results[contentMessage.results.length - 1].id,
+        );
+      }
+    };
+
+    const scrollDiv = messagesRef.current;
+    if (scrollDiv) {
+      scrollDiv.addEventListener("scroll", handleScroll);
+    }
+
+    return () => {
+      if (scrollDiv) {
+        scrollDiv.removeEventListener("scroll", handleScroll);
+      }
+    };
+  }, [messagesRef.current, contentMessage]);
+
+  // Handle Send Message
   const handleKeyPress = (e) => {
-    // Khi nhấn phím "Enter"
     if (e.key === "Enter") {
       e.preventDefault();
       handleSendMessage();
     }
   };
 
-  const handleSendMessage = () => {
+  const handleSendMessage = async () => {
     if (message.trim() !== "") {
       const newMessage = {
-        key: 1,
-        image:
-          "https://pbs.twimg.com/profile_images/1116431270697766912/-NfnQHvh_400x400.jpg",
-        type: "",
-        msg: message,
+        sender: props.infoChatContent.sender.id,
+        receiver: props.infoChatContent.receiver.id,
+        content: message.trim(),
+        media: null,
       };
-      setContentMessage((prev) => [...prev, newMessage]);
+      // setContentMessage((prev) => [...prev, newMessage]);
+
+      const response = await sendDirectMessages(newMessage);
+      await response.json();
     }
     setMessage("");
   };
 
-  return (
-    <div className="main__chatcontent">
-      <div className="content__header">
-        <div className="blocks">
-          <div className="current-chatting-user">
-            <Avatar
-              isOnline="active"
-              image="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcTA78Na63ws7B7EAWYgTr9BxhX_Z8oLa1nvOA&usqp=CAU"
-            />
-            <p>Tim Hover</p>
-          </div>
-        </div>
-      </div>
-      <div className="content__body" ref={messagesRef}>
-        <div className="chat__items">
-          {contentMessage.map((itm, index) => {
+  const mainContent = useMemo(() => {
+    const contentRender =
+      contentMessage !== null ? [...contentMessage.results].reverse() : null;
+    return (
+      <div className="chat__items">
+        {contentRender !== null &&
+          contentRender.map((item, index) => {
+            const user =
+              item.sender === props.infoChatContent.sender.id ? "me" : "other";
+            const image =
+              item.sender === props.infoChatContent.sender.id
+                ? props.infoChatContent.sender.avatar
+                : props.infoChatContent.receiver.avatar;
             return (
               <ChatItem
                 animationDelay={index + 2}
                 key={index}
-                user={itm.type ? itm.type : "me"}
-                msg={itm.msg}
-                image={itm.image}
+                user={user}
+                msg={item.content}
+                image={image !== null ? image : "http://placehold.it/80x80"}
+                sendAt={item.time}
               />
             );
           })}
-          <div ref={null} />
-        </div>
+        <div ref={null} />
       </div>
-      <div className="content__footer">
-        <div className="sendNewMessage">
-          {/* <button className="addFiles">
+    );
+  }, [contentMessage]);
+
+  return (
+    <div className="main__chatcontent">
+      {props.infoChatContent.receiver === null ? (
+        <div className="content__empty">
+          Please select a chat to start messaging
+        </div>
+      ) : (
+        <div>
+          <div className="content__header">
+            <div className="blocks">
+              <div className="current-chatting-user">
+                <Avatar
+                  isOnline="active"
+                  image={
+                    props.infoChatContent.receiver.avatar !== null
+                      ? props.infoChatContent.receiver.avatar
+                      : "http://placehold.it/80x80"
+                  }
+                />
+                <p>{`${props.infoChatContent.receiver.first_name} ${props.infoChatContent.receiver.last_name}`}</p>
+              </div>
+            </div>
+          </div>
+          <div className="content__body" ref={messagesRef}>
+            {mainContent}
+          </div>
+          <div className="content__footer">
+            <div className="sendNewMessage">
+              {/* <button className="addFiles">
             <i className="fa fa-plus"></i>
           </button> */}
-          <input
-            type="text"
-            placeholder="Type a message here"
-            onChange={(e) => {
-              setMessage(e.target.value);
-            }}
-            value={message}
-            onKeyPress={handleKeyPress}
-          />
-          <button
-            className="btnSendMsg"
-            id="sendMsgBtn"
-            onClick={handleSendMessage}
-          >
-            <FontAwesomeIcon icon={faPaperPlane} />
-          </button>
+              <input
+                type="text"
+                placeholder="Type a message here"
+                onChange={(e) => {
+                  setMessage(e.target.value);
+                }}
+                value={message}
+                onKeyPress={handleKeyPress}
+              />
+              <button
+                className="btnSendMsg"
+                id="sendMsgBtn"
+                onClick={handleSendMessage}
+              >
+                <FontAwesomeIcon icon={faPaperPlane} />
+              </button>
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }
