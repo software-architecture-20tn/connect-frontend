@@ -17,7 +17,7 @@ function FindFriend({ className, setSidebarOpen, ...props }) {
     const findFriends = () =>
       fetchApi.get(`/users/users/search/?keyword=${debouncedValue}`);
     try {
-      const response = await findFriends();
+      const response = await findFriends();  
       const data = await response.json();
       setListFilter(data);
     } catch (error) {
@@ -40,7 +40,7 @@ function FindFriend({ className, setSidebarOpen, ...props }) {
     }
   };
 
-  return (
+  return (   
     <div className="findfriend-wrapper">
       <div className="header">
         <FontAwesomeIcon
