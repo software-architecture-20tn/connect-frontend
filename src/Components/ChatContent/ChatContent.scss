@@ -4,6 +4,13 @@
   padding-left: 400px;
   border-right: 1px solid #ebe7fb;
 }
+.content__empty{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
 .content__header {
   padding-bottom: 15px;
   border-bottom: 1px solid #ebe7fb;
@@ -25,6 +32,7 @@
   color: var(--text-color);
 }
 .content__body {
+  min-height: calc(100vh - calc(100vh / 4));
   max-height: calc(100vh - calc(100vh / 4));
   overflow: auto;
 }

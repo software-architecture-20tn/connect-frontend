@@ -5,6 +5,16 @@ import "./ChatList.scss";
 import ChatListItem from "./ChatListItem";
 
 function ChatList({ ListData, className, ...props }) {
+  const handleActive = (item) => {
+    if (props.infoChatContent.receiver) {
+      return (
+        props.infoChatContent.receiver.id === item.receiver ||
+        props.infoChatContent.receiver.id === item.sender
+      );
+    }
+
+    return false;
+  };
   return (
     <div className="chatlist__items">
       {ListData.map((item, index) => {
@@ -12,9 +22,11 @@ function ChatList({ ListData, className, ...props }) {
           <ChatListItem
             key={index}
             animationDelay={index + 1}
-            active={item.id === 1 ? "active" : ""}
+            active={handleActive(item) ? "active" : ""}
             isOnline={item.isOnline ? "active" : ""}
             data={item}
+            setInfoChatContent={props.setInfoChatContent}
+            infoChatContent={props.infoChatContent}
           />
         );
       })}

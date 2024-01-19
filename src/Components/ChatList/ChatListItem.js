@@ -1,14 +1,38 @@
 import React from "react";
+import { fetchApi } from "../../api";
 import "./ChatList.scss";
 import Avatar from "./Avatar";
 
 function ChatListItem({ data, active, isOnline, animationDelay, ...props }) {
+  const getReceiverInfo = (id) => fetchApi.get(`/users/friends/${id}/`, "");
+  const handleChooseChatContent = () => {
+    const receiverId =
+      props.infoChatContent.sender.id === data.sender
+        ? data.receiver
+        : data.sender;
+
+    const handleGetReceiverInfo = async () => {
+      const response = await getReceiverInfo(receiverId);
+      if (response.status === 401) {
+        console.log(response);
+      }
+      const receiverInfo = await response.json();
+      props.setInfoChatContent((prev) => ({
+        ...prev,
+        receiver: receiverInfo,
+      }));
+    };
+
+    handleGetReceiverInfo();
+  };
+
   return (
     <>
       <div
         style={{ animationDelay: `0.${animationDelay}s` }}
         // onClick={this.selectChat}
         className={`chatlist__item ${active ? "active" : ""}`}
+        onClick={handleChooseChatContent}
       >
         <Avatar
           image={

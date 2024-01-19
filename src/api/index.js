@@ -14,7 +14,6 @@ function request(method) {
         ...getAuthHeader(),
       },
     };
-
     if (body) {
       if (body instanceof FormData) {
         requestSent.body = body;
