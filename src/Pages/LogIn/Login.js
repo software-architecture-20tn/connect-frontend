@@ -15,7 +15,7 @@ function Login() {
   const navigate = useNavigate();
 
   const schema = yup.object().shape({
-    email: yup.string().email().required("Please enter email"),
+    email: yup.string().required("Please enter your email or username"),
     password: yup.string().required("Please enter your password"),
   });
 
@@ -30,8 +30,11 @@ function Login() {
   const dispatch = useDispatch();
   const authStates = useSelector((state) => state.auth);
   const [isLoading, setIsLoading] = useState(false);
+  const [requestCount, setRequestCount] = useState(0); // Add this line
+  const [hasShownToast, setHasShownToast] = useState(false);
   useEffect(() => {
-    if (authStates.isLogin) {
+    if (authStates.isLogin && !hasShownToast) {
+      setHasShownToast(true);
       toast.success("Login successful!", {
         position: "top-right",
         autoClose: 1000,
@@ -42,7 +45,12 @@ function Login() {
       setTimeout(() => {
         navigate("/");
       }, 1000);
-    } else if (authStates.error >= 400 && authStates.error < 500) {
+    } else if (
+      authStates.error >= 400 &&
+      authStates.error < 500 &&
+      !hasShownToast
+    ) {
+      setHasShownToast(true);
       toast.error("Please recheck password and username", {
         position: "top-right",
         autoClose: 1000,
@@ -51,22 +59,36 @@ function Login() {
         theme: "light",
       });
     }
-  }, [authStates]);
+  }, [authStates, requestCount]);
 
   const onSubmit = async (data) => {
     setIsLoading(true);
+    setHasShownToast(false);
     const dataRequest = {
-      email: data.email,
       password: data.password,
     };
+    const isEmail = /\S+@\S+.\S+/.test(data.email);
+    if (isEmail) {
+      dataRequest.email = data.email;
+    } else {
+      dataRequest.id = data.email;
+    }
+
     console.log(dataRequest);
-    dispatch(logIn(dataRequest));
+    try {
+      await dispatch(logIn(dataRequest));
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
+      setRequestCount(requestCount + 1);
+    }
   };
 
   return (
     <div className="login">
-      {isLoading && <LoadingSpinner className="loading" />}
       <ToastContainer />
+      {isLoading && <LoadingSpinner className="loading" />}
       <form
         className={`login__form ${isLoading ? "blur" : ""}`}
         onSubmit={handleSubmit(onSubmit)}

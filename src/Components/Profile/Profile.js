@@ -16,7 +16,7 @@ import {
   faArrowRightFromBracket,
 } from "@fortawesome/free-solid-svg-icons";
 
-function Profile({ user, setSidebarOpen }) {
+function Profile({ user, setRefresh, refresh, setSidebarOpen }) {
   const schema = yup.object().shape({
     firstName: yup.string(),
     lastName: yup.string(),
@@ -62,6 +62,7 @@ function Profile({ user, setSidebarOpen }) {
       console.log(e);
     } finally {
       setIsLoading(false);
+      setRefresh(!refresh);
     }
   };
   const handleLogout = () => {
@@ -69,6 +70,7 @@ function Profile({ user, setSidebarOpen }) {
   };
 
   const handleFileChange = (e) => {
+    console.log("handle file change");
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       if (!file.type.startsWith("image/")) {
@@ -81,6 +83,7 @@ function Profile({ user, setSidebarOpen }) {
   };
 
   const handleAvatarClick = () => {
+    console.log("handle avatar click");
     fileInputRef.current.click();
   };
   return isLoading ? (

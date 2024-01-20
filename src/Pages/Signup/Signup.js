@@ -54,7 +54,7 @@ function Signup() {
 
     const response = await signUp(dataRequest);
     const dataResponse = await response.json();
-    if (dataResponse.ok) {
+    if (response.ok) {
       toast.success("Register successful!", {
         position: "top-right",
         autoClose: 1000,
