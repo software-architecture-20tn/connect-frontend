@@ -14,17 +14,35 @@ function ChatContent({ className, ...props }) {
   const sendDirectMessages = (dataRequest) => {
     return fetchApi.post("/conversations/direct-messages/create/", dataRequest);
   };
+  const sendGroupMessages = (dataRequest) => {
+    return fetchApi.post("/conversations/group-messages/create/", dataRequest);
+  };
   const messagesRef = useRef(null);
   const [contentMessage, setContentMessage] = useState(null);
   const [message, setMessage] = useState("");
 
   // Load Start Chat Content
   const loadStartChatContent = async () => {
-    const receiverId =
-      props.infoChatContent.receiver && props.infoChatContent.receiver.id;
-    if (receiverId) {
+    if (props.infoChatContent.receiver === null) {
+      return;
+    }
+    if (!props.infoChatContent.receiver.group) {
+      const receiverId =
+        props.infoChatContent.receiver && props.infoChatContent.receiver.id;
+      if (receiverId) {
+        const response = await getChatContent(
+          `/conversations/direct-messages/${receiverId}/?limit=8&offset=0`,
+        );
+        const data = await response.json();
+        setContentMessage({
+          count: data.count,
+          results: data.results,
+        });
+      }
+    } else {
+      console.log(props.infoChatContent.receiver);
       const response = await getChatContent(
-        `/conversations/direct-messages/${receiverId}/?limit=8&offset=0`,
+        `/conversations/group-messages/${props.infoChatContent.receiver.group}/?limit=8&offset=0`,
       );
       const data = await response.json();
       setContentMessage({
@@ -39,48 +57,94 @@ function ChatContent({ className, ...props }) {
 
   // Handle when update messages
   const fetchChatContent = useMemo(() => {
-    const receiverId =
-      props.infoChatContent.receiver && props.infoChatContent.receiver.id;
-    const curID = contentMessage && contentMessage.results[0].id;
-    return async () => {
-      if (receiverId) {
-        const response = await getChatContent(
-          `/conversations/direct-messages/${receiverId}/?limit=8&offset=0`,
-        );
-        const data = await response.json();
-        // setApiGetOldContent(data.next);
-        if (contentMessage !== null) {
-          const idxSmaller = data.results.findIndex((item) => item.id <= curID);
-          if (data.results.slice(0, idxSmaller).length > 0) {
-            setContentMessage((prev) => {
-              return {
-                count: data.count,
-                results: [
-                  ...data.results.slice(0, idxSmaller),
-                  ...prev.results,
-                ],
-              };
+    if (props.infoChatContent.receiver === null) {
+      return;
+    }
+    if (!props.infoChatContent.receiver.group) {
+      const receiverId =
+        props.infoChatContent.receiver && props.infoChatContent.receiver.id;
+      const curID = contentMessage && contentMessage.results[0].id;
+      return async () => {
+        if (receiverId) {
+          const response = await getChatContent(
+            `/conversations/direct-messages/${receiverId}/?limit=8&offset=0`,
+          );
+          const data = await response.json();
+          // setApiGetOldContent(data.next);
+          if (contentMessage !== null) {
+            const idxSmaller = data.results.findIndex(
+              (item) => item.id <= curID,
+            );
+            if (data.results.slice(0, idxSmaller).length > 0) {
+              setContentMessage((prev) => {
+                return {
+                  count: data.count,
+                  results: [
+                    ...data.results.slice(0, idxSmaller),
+                    ...prev.results,
+                  ],
+                };
+              });
+            }
+          } else {
+            setContentMessage({
+              count: data.count,
+              results: data.results,
             });
           }
-        } else {
-          setContentMessage({
-            count: data.count,
-            results: data.results,
-          });
         }
-      }
-    };
+      };
+    } else {
+      const groupId =
+        props.infoChatContent.receiver && props.infoChatContent.receiver.group;
+      const curID = contentMessage && contentMessage.results[0].id;
+      return async () => {
+        if (groupId) {
+          const response = await getChatContent(
+            `/conversations/group-messages/${groupId}/?limit=8&offset=0`,
+          );
+          const data = await response.json();
+          // setApiGetOldContent(data.next);
+          if (contentMessage !== null) {
+            const idxSmaller = data.results.findIndex(
+              (item) => item.id <= curID,
+            );
+            if (data.results.slice(0, idxSmaller).length > 0) {
+              setContentMessage((prev) => {
+                return {
+                  count: data.count,
+                  results: [
+                    ...data.results.slice(0, idxSmaller),
+                    ...prev.results,
+                  ],
+                };
+              });
+            }
+          } else {
+            setContentMessage({
+              count: data.count,
+              results: data.results,
+            });
+          }
+        }
+      };
+    }
   }, [props.infoChatContent, contentMessage]);
 
   useEffect(() => {
     if (messagesRef.current && contentMessage) {
-      if (
+      console.log(messagesRef.current.scrollTop);
+      console.log(
+        messagesRef.current.scrollHeight - messagesRef.current.scrollTop,
+      );
+      if (messagesRef.current.scrollTop === 0) {
+        messagesRef.current.scrollTop = 0;
+      } else if (
         messagesRef.current.scrollHeight - messagesRef.current.scrollTop <=
         830
       ) {
         messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
-      }
-      if (
+      } else if (
         props.infoChatContent.sender.id === contentMessage.results[0].sender
       ) {
         messagesRef.current.scrollTop = messagesRef.current.scrollHeight;
@@ -101,18 +165,33 @@ function ChatContent({ className, ...props }) {
 
   // Handle load old chat
   const loadOldChatContent = async (offset, curID) => {
-    const receiverId = props.infoChatContent.receiver.id;
-    const response = await getChatContent(
-      `/conversations/direct-messages/${receiverId}/?limit=8&offset=${offset}`,
-    );
-    const data = await response.json();
-    const idxSmaller = data.results.findIndex((item) => item.id < curID);
-    setContentMessage((prev) => {
-      return {
-        count: data.count,
-        results: [...prev.results, ...data.results.slice(idxSmaller)],
-      };
-    });
+    if (!props.infoChatContent.receiver.group) {
+      const receiverId = props.infoChatContent.receiver.id;
+      const response = await getChatContent(
+        `/conversations/direct-messages/${receiverId}/?limit=8&offset=${offset}`,
+      );
+      const data = await response.json();
+      const idxSmaller = data.results.findIndex((item) => item.id < curID);
+      setContentMessage((prev) => {
+        return {
+          count: data.count,
+          results: [...prev.results, ...data.results.slice(idxSmaller)],
+        };
+      });
+    } else {
+      const groupId = props.infoChatContent.receiver.group;
+      const response = await getChatContent(
+        `/conversations/group-messages/${groupId}/?limit=8&offset=${offset}`,
+      );
+      const data = await response.json();
+      const idxSmaller = data.results.findIndex((item) => item.id < curID);
+      setContentMessage((prev) => {
+        return {
+          count: data.count,
+          results: [...prev.results, ...data.results.slice(idxSmaller)],
+        };
+      });
+    }
   };
 
   useEffect(() => {
@@ -151,16 +230,26 @@ function ChatContent({ className, ...props }) {
 
   const handleSendMessage = async () => {
     if (message.trim() !== "") {
-      const newMessage = {
-        sender: props.infoChatContent.sender.id,
-        receiver: props.infoChatContent.receiver.id,
-        content: message.trim(),
-        media: null,
-      };
+      if (props.infoChatContent.receiver.group) {
+        const newMessage = {
+          sender: props.infoChatContent.sender.id,
+          group: props.infoChatContent.receiver.group,
+          content: message.trim(),
+          media: null,
+        };
+        const response = await sendGroupMessages(newMessage);
+        await response.json();
+      } else {
+        const newMessage = {
+          sender: props.infoChatContent.sender.id,
+          receiver: props.infoChatContent.receiver.id,
+          content: message.trim(),
+          media: null,
+        };
+        const response = await sendDirectMessages(newMessage);
+        await response.json();
+      }
       // setContentMessage((prev) => [...prev, newMessage]);
-
-      const response = await sendDirectMessages(newMessage);
-      await response.json();
     }
     setMessage("");
   };
@@ -213,7 +302,7 @@ function ChatContent({ className, ...props }) {
                       : "http://placehold.it/80x80"
                   }
                 />
-                <p>{`${props.infoChatContent.receiver.first_name} ${props.infoChatContent.receiver.last_name}`}</p>
+                <p>{`${props.infoChatContent.receiver.conversation_name}`}</p>
               </div>
             </div>
           </div>
