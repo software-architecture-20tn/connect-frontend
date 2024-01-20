@@ -7,6 +7,7 @@ import "./Home.scss";
 import Profile from "../../Components/Profile";
 import ChatSidebar from "../../Components/ChatSidebar";
 import FindFriend from "../../Components/FindFriend";
+import CloseFriends from "../../Components/CloseFriends";
 import ChatContent from "../../Components/ChatContent";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../_helpers/authThunk";
@@ -14,6 +15,7 @@ import LoadingSpinner from "../../Components/LoadingSpinner";
 function Home() {
   const getUserInfo = () => fetchApi.get("/users/me/", "");
   const [user, setUser] = useState(null);
+  const [refresh, setRefresh] = useState(false);
   const dispatch = useDispatch();
   const [sidebarOpen, setSidebarOpen] = useState("listFriend");
   const [infoChatContent, setInfoChatContent] = useState({
@@ -45,7 +47,7 @@ function Home() {
     };
 
     fetchUserData();
-  }, []);
+  }, [refresh]);
 
   if (!user) {
     return <LoadingSpinner />;
@@ -63,10 +65,20 @@ function Home() {
       );
       break;
     case "profile":
-      Sidebar = <Profile user={user} setSidebarOpen={setSidebarOpen} />;
+      Sidebar = (
+        <Profile
+          user={user}
+          setSidebarOpen={setSidebarOpen}
+          setRefresh={setRefresh}
+          refresh={refresh}
+        />
+      );
       break;
     case "findFriends":
       Sidebar = <FindFriend setSidebarOpen={setSidebarOpen} />;
+      break;
+    case "closeFriends":
+      Sidebar = <CloseFriends setSidebarOpen={setSidebarOpen} />;
       break;
   }
 

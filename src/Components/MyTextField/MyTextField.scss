@@ -1,26 +1,23 @@
 .text-field {
-    height: 80px;
+    height: max-content;
+    
     input {
         width: 100%;
-        height: 30px;
+        height: 20px;
         color: var(--text-color);
     }
 
     .MuiFormLabel-root {
         color: var(--text-color-light);
     }
-
-    .MuiInput-underline {
-        &:before {
-            border-bottom: 1px solid var(--text-color-light);
-        }
-        margin-bottom: 10px;
+    .MuiInput-root {
+        margin-bottom: 20px;
     }
-
-
-
-    
+    .MuiInput-underline {
+        margin-bottom: 20px;
+    }
+    textarea {
+        color: var(--text-color);
+    }
 }
-
-
 

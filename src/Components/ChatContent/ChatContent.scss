@@ -18,6 +18,18 @@
 .current-chatting-user {
   display: flex;
   align-items: center;
+  width: 100%;
+  
+  background-color: transparent;
+  :hover {
+    cursor: pointer;
+    backdrop-filter: brightness(0.8);
+  }
+
+  p {
+    height: 100%;
+  }
+
 }
 .current-chatting-user p {
   margin: 0;
