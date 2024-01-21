@@ -133,10 +133,6 @@ function ChatContent({ className, ...props }) {
 
   useEffect(() => {
     if (messagesRef.current && contentMessage) {
-      console.log(messagesRef.current.scrollTop);
-      console.log(
-        messagesRef.current.scrollHeight - messagesRef.current.scrollTop,
-      );
       if (messagesRef.current.scrollTop === 0) {
         messagesRef.current.scrollTop = 0;
       } else if (
@@ -154,7 +150,7 @@ function ChatContent({ className, ...props }) {
 
   useEffect(() => {
     const handleLoop = () => {
-      fetchChatContent();
+      fetchChatContent !== undefined && fetchChatContent();
     };
     const intervalId = setInterval(handleLoop, 5000);
 
