@@ -6,24 +6,39 @@ import Avatar from "./Avatar";
 function ChatListItem({ data, active, isOnline, animationDelay, ...props }) {
   const getReceiverInfo = (id) => fetchApi.get(`/users/friends/${id}/`, "");
   const handleChooseChatContent = () => {
-    const receiverId =
-      props.infoChatContent.sender.id === data.sender
-        ? data.receiver
-        : data.sender;
+    if (data.receiver) {
+      const receiverId =
+        props.infoChatContent.sender.id === data.sender
+          ? data.receiver
+          : data.sender;
 
-    const handleGetReceiverInfo = async () => {
-      const response = await getReceiverInfo(receiverId);
-      if (response.status === 401) {
-        console.log(response);
-      }
-      const receiverInfo = await response.json();
+      const handleGetReceiverInfo = async () => {
+        const response = await getReceiverInfo(receiverId);
+        if (response.status === 401) {
+          console.log(response);
+        }
+        const receiverInfo = await response.json();
+        props.setInfoChatContent((prev) => ({
+          ...prev,
+          receiver: {
+            ...receiverInfo,
+            conversation_name: data.conversation_name,
+          },
+        }));
+      };
+
+      handleGetReceiverInfo();
+    } else {
+      const receiverInfo = {
+        group: data.group,
+        avatar: data.avatar,
+        conversation_name: data.conversation_name,
+      };
       props.setInfoChatContent((prev) => ({
         ...prev,
         receiver: receiverInfo,
       }));
-    };
-
-    handleGetReceiverInfo();
+    }
   };
 
   return (
