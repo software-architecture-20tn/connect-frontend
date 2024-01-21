@@ -19,9 +19,32 @@
       color: var(--text-color);
     }
 
-    .toggle-button:hover {
-      color: var(--text-color-light);
-      cursor: pointer;
+    .toggle-button{
+      color: var(--text-color);
+      :hover {
+        color: var(--text-color-light);
+        cursor: pointer;
+      }
+    }
+    
+    
+
+    .icons {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+
+      .friend-requests-icon {
+        width: 18px;
+        height: 18px;
+        color: var(--text-color);
+        :hover {
+          cursor: pointer;
+          color: var(--text-color-light)
+        }
+      }
     }
   }
 

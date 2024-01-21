@@ -12,7 +12,7 @@ function App() {
   // const [isLogin, setIsLogin] = useState(getToken() !== null);
   const isLogin = useSelector((state) => state.auth.isLogin);
 
-  const theme = "light";
+  const theme = "dark";
   return (
     <div className="App" data-theme={theme}>
       <Routes>

@@ -9,9 +9,10 @@ import {
   faUserPlus,
   faCircleQuestion,
   faArrowRightFromBracket,
+  faEnvelopeOpenText,
 } from "@fortawesome/free-solid-svg-icons";
 import "tippy.js/dist/tippy.css";
-
+import FriendRequestsNoti from "../FriendRequestsNoti/FriendRequestsNoti";
 import "./ChatSidebar.scss";
 import ChatList from "../ChatList";
 import Popper from "../Popper";
@@ -58,12 +59,28 @@ const MENU_ITEMS = [
   },
 ];
 
+const frList = [
+  {
+    id: 38,
+    sender: 24,
+    sender_username: "tuilanhu",
+    sender_first_name: "QNhu",
+    sender_last_name: "Pham",
+    sender_avatar:
+      "/media/users/user/24/4aed8960-8695-47f2-81e0-470c1226575d/ninja.webp",
+    receiver: 40,
+    date_time_sent: "2024-01-20T18:57:14.415793Z",
+    is_approved: false,
+  },
+];
+
 function ChatSidebar({ className, ...props }) {
   const getListChats = () => fetchApi.get("/conversations/conversations/");
   const [listData, setListData] = useState([]);
   const [listFilter, setListFilter] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const debouncedValue = useDebounce(searchValue, 500);
+  const [anchor, setAnchor] = useState(null);
   const dispatch = useDispatch();
 
   const fetchData = async () => {
@@ -125,26 +142,42 @@ function ChatSidebar({ className, ...props }) {
       setSearchValue(searchValue);
     }
   };
-
+  const handleFriendRequestsClick = (e) => {
+    setAnchor(anchor ? null : e.currentTarget);
+  };
   return (
     <div className="sidebar-wrapper">
       <div className="header">
         <p>Telegram</p>
-        <Popper items={MENU_ITEMS} onChange={handleMenuChange}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="currentColor"
-            className="bi bi-list toggle-button"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fillRule="evenodd"
-              d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
+        <div className="icons">
+          <div>
+            <FontAwesomeIcon
+              className="friend-requests-icon"
+              icon={faEnvelopeOpenText}
+              onClick={handleFriendRequestsClick}
             />
-          </svg>
-        </Popper>
+            <FriendRequestsNoti
+              friendRequestList={frList}
+              open={anchor !== null}
+              anchor={anchor}
+            />
+          </div>
+          <Popper items={MENU_ITEMS} onChange={handleMenuChange}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              className="bi bi-list toggle-button"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fillRule="evenodd"
+                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
+              />
+            </svg>
+          </Popper>
+        </div>
       </div>
       <div className="search-box">
         <svg
