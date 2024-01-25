@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUser,
-  faAddressBook,
+  faUserGroup,
   faPhoneFlip,
   faBookmark,
   faUserPlus,
@@ -29,13 +29,13 @@ const MENU_ITEMS = [
   },
   {
     icon: <FontAwesomeIcon icon={faUserPlus} />,
-    title: "Find Friends",
-    type: "findFriends",
+    title: "Find Users",
+    type: "findUsers",
   },
   {
-    icon: <FontAwesomeIcon icon={faAddressBook} />,
-    title: "Contacts",
-    type: "contacts",
+    icon: <FontAwesomeIcon icon={faUserGroup} />,
+    title: "Create Groups",
+    type: "createGroups",
   },
   {
     icon: <FontAwesomeIcon icon={faPhoneFlip} />,
@@ -114,6 +114,9 @@ function ChatSidebar({ className, ...props }) {
         break;
       case "findFriends":
         props.setSidebarOpen("findFriends");
+        break;
+      case "createGroups":
+        props.setSidebarOpen("createGroups");
         break;
       case "logout":
         dispatch(logOut());
