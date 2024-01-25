@@ -6,7 +6,8 @@ import "react-toastify/dist/ReactToastify.css";
 import "./Home.scss";
 import Profile from "../../Components/Profile";
 import ChatSidebar from "../../Components/ChatSidebar";
-import FindFriend from "../../Components/FindFriend";
+import FindUsers from "../../Components/FindUsers";
+import CreateGroups from "../../Components/CreateGroups";
 import CloseFriends from "../../Components/CloseFriends";
 import ChatContent from "../../Components/ChatContent";
 import { useDispatch } from "react-redux";
@@ -74,11 +75,14 @@ function Home() {
         />
       );
       break;
-    case "findFriends":
-      Sidebar = <FindFriend setSidebarOpen={setSidebarOpen} />;
+    case "findUsers":
+      Sidebar = <FindUsers setSidebarOpen={setSidebarOpen} />;
       break;
     case "closeFriends":
       Sidebar = <CloseFriends setSidebarOpen={setSidebarOpen} />;
+      break;
+    case "createGroups":
+      Sidebar = <CreateGroups setSidebarOpen={setSidebarOpen} />;
       break;
   }
 

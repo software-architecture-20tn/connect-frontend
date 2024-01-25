@@ -3,12 +3,12 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import "tippy.js/dist/tippy.css";
 
-import "./FindFriend.scss";
+import "./FindUsers.scss";
 import FriendsList from "../FriendsList";
 import { useDebounce } from "../../hooks";
 import { fetchApi } from "../../api";
 
-function FindFriend({ className, setSidebarOpen, ...props }) {
+function FindUsers({ className, setSidebarOpen, ...props }) {
   const [listFilter, setListFilter] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const debouncedValue = useDebounce(searchValue, 500);
@@ -80,4 +80,4 @@ function FindFriend({ className, setSidebarOpen, ...props }) {
   );
 }
 
-export default FindFriend;
+export default FindUsers;
