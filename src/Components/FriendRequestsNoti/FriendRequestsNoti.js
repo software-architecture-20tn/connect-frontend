@@ -10,6 +10,7 @@ function FriendRequestsNoti({ friendRequestList, open, anchor, ...props }) {
     containerRef.current =
       document.getElementsByClassName("sidebar-wrapper")[0];
   }, []);
+  console.log(friendRequestList);
   return (
     <div className="friend-requests">
       <Popper
@@ -34,9 +35,15 @@ function FriendRequestsNoti({ friendRequestList, open, anchor, ...props }) {
         ]}
       >
         <div className="friend-requests__items">
-          {friendRequestList.map((item) => {
-            return <FriendRequestItem key={item.id} requestItem={item} />;
-          })}
+          {friendRequestList.length > 0 ? (
+            friendRequestList.map((item) => {
+              return <FriendRequestItem key={item.id} requestItem={item} />;
+            })
+          ) : (
+            <div className="friend-requests__items__text">
+              No friend requests await
+            </div>
+          )}
         </div>
       </Popper>
     </div>

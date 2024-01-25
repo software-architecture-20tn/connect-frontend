@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { setFriendRequests } from "../../_store/friendRequestsSlice";
 import {
   faUser,
   faUserGroup,
@@ -59,30 +60,19 @@ const MENU_ITEMS = [
   },
 ];
 
-const frList = [
-  {
-    id: 38,
-    sender: 24,
-    sender_username: "tuilanhu",
-    sender_first_name: "QNhu",
-    sender_last_name: "Pham",
-    sender_avatar:
-      "/media/users/user/24/4aed8960-8695-47f2-81e0-470c1226575d/ninja.webp",
-    receiver: 40,
-    date_time_sent: "2024-01-20T18:57:14.415793Z",
-    is_approved: false,
-  },
-];
-
 function ChatSidebar({ className, ...props }) {
   const getListChats = () => fetchApi.get("/conversations/conversations/");
+  const getFriendRequests = () =>
+    fetchApi.get("/users/friend-requests/?limit=5&offset=0");
   const [listData, setListData] = useState([]);
   const [listFilter, setListFilter] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const debouncedValue = useDebounce(searchValue, 500);
   const [anchor, setAnchor] = useState(null);
   const dispatch = useDispatch();
-
+  const listFriendRequest = useSelector(
+    (state) => state.friendRequests.friendRequests,
+  );
   const fetchData = async () => {
     try {
       const response = await getListChats();
@@ -98,22 +88,31 @@ function ChatSidebar({ className, ...props }) {
     const checkMessages = async () => {
       fetchData();
     };
-
+    const fetchFriendRequests = async () => {
+      try {
+        const response = await getFriendRequests();
+        const data = await response.json();
+        dispatch(setFriendRequests(data.results));
+      } catch (error) {
+        console.log("Error fetching friend requests: ", error);
+      }
+    };
+    fetchFriendRequests();
     fetchData();
     const intervalId = setInterval(checkMessages, 5000);
 
     return () => {
       clearInterval(intervalId);
     };
-  }, []);
+  }, [dispatch, listFriendRequest]);
 
   const handleMenuChange = (menuItem) => {
     switch (menuItem.type) {
       case "Profile":
         props.setSidebarOpen("profile");
         break;
-      case "findFriends":
-        props.setSidebarOpen("findFriends");
+      case "findUsers":
+        props.setSidebarOpen("findUsers");
         break;
       case "createGroups":
         props.setSidebarOpen("createGroups");
@@ -159,8 +158,11 @@ function ChatSidebar({ className, ...props }) {
               icon={faEnvelopeOpenText}
               onClick={handleFriendRequestsClick}
             />
+            {listFriendRequest.length > 0 && (
+              <div className="notification-dot"></div>
+            )}
             <FriendRequestsNoti
-              friendRequestList={frList}
+              friendRequestList={listFriendRequest}
               open={anchor !== null}
               anchor={anchor}
             />

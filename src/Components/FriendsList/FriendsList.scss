@@ -6,6 +6,7 @@
 }
 
 .friendslist__item {
+  color: var(--text-color);
   width: 80%;
   display: flex;
   border-bottom: 1px solid #ebe7fb;
@@ -78,10 +79,11 @@
 .friendslist__item .userMeta p {
   margin: 0;
   padding: 0;
-  color: #000;
+  color: var(--text-color);
   font-weight: 600;
   font-size: 14px;
 }
+
 .friendslist__item .userMeta span {
   margin: 0;
   padding: 0;
@@ -92,8 +94,7 @@
 }
 .friendslist__item:hover,
 .friendslist__item.active {
-  background: #f0f0f0;
-
+  background: #383838;
   border-radius: 10px;
 }
 .isOnline {

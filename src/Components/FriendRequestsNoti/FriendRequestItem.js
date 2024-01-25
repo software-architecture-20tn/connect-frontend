@@ -13,7 +13,7 @@ function FriendRequestItem({ requestItem }) {
 
   const handleAccept = async () => {
     const postAcceptRequest = fetchApi.post(
-      `/users/friend-requests/${requestItem.id}/accept`,
+      `/users/friend-requests/${requestItem.id}/accept/`,
     );
     try {
       const response = await postAcceptRequest();
