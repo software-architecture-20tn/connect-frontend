@@ -221,7 +221,7 @@ function ChatSidebar({ className, ...props }) {
           setInfoChatContent={props.setInfoChatContent}
         />
       ) : (
-        <p>Don&apos;t have friend</p>
+        <p>Your conversations will appear here</p>
       )}
     </div>
   );
