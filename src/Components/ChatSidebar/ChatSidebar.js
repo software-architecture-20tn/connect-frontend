@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { setFriendRequests } from "../../_store/friendRequestsSlice";
 import {
   faUser,
   faUserGroup,
@@ -9,9 +10,10 @@ import {
   faUserPlus,
   faCircleQuestion,
   faArrowRightFromBracket,
+  faEnvelopeOpenText,
 } from "@fortawesome/free-solid-svg-icons";
 import "tippy.js/dist/tippy.css";
-
+import FriendRequestsNoti from "../FriendRequestsNoti/FriendRequestsNoti";
 import "./ChatSidebar.scss";
 import ChatList from "../ChatList";
 import Popper from "../Popper";
@@ -60,12 +62,17 @@ const MENU_ITEMS = [
 
 function ChatSidebar({ className, ...props }) {
   const getListChats = () => fetchApi.get("/conversations/conversations/");
+  const getFriendRequests = () =>
+    fetchApi.get("/users/friend-requests/?limit=5&offset=0");
   const [listData, setListData] = useState([]);
   const [listFilter, setListFilter] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const debouncedValue = useDebounce(searchValue, 500);
+  const [anchor, setAnchor] = useState(null);
   const dispatch = useDispatch();
-
+  const listFriendRequest = useSelector(
+    (state) => state.friendRequests.friendRequests,
+  );
   const fetchData = async () => {
     try {
       const response = await getListChats();
@@ -81,22 +88,31 @@ function ChatSidebar({ className, ...props }) {
     const checkMessages = async () => {
       fetchData();
     };
-
+    const fetchFriendRequests = async () => {
+      try {
+        const response = await getFriendRequests();
+        const data = await response.json();
+        dispatch(setFriendRequests(data.results));
+      } catch (error) {
+        console.log("Error fetching friend requests: ", error);
+      }
+    };
+    fetchFriendRequests();
     fetchData();
     const intervalId = setInterval(checkMessages, 5000);
 
     return () => {
       clearInterval(intervalId);
     };
-  }, []);
+  }, [dispatch, listFriendRequest]);
 
   const handleMenuChange = (menuItem) => {
     switch (menuItem.type) {
       case "Profile":
         props.setSidebarOpen("profile");
         break;
-      case "findFriends":
-        props.setSidebarOpen("findFriends");
+      case "findUsers":
+        props.setSidebarOpen("findUsers");
         break;
       case "createGroups":
         props.setSidebarOpen("createGroups");
@@ -128,26 +144,45 @@ function ChatSidebar({ className, ...props }) {
       setSearchValue(searchValue);
     }
   };
-
+  const handleFriendRequestsClick = (e) => {
+    setAnchor(anchor ? null : e.currentTarget);
+  };
   return (
     <div className="sidebar-wrapper">
       <div className="header">
         <p>Telegram</p>
-        <Popper items={MENU_ITEMS} onChange={handleMenuChange}>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            width="24"
-            height="24"
-            fill="currentColor"
-            className="bi bi-list toggle-button"
-            viewBox="0 0 16 16"
-          >
-            <path
-              fillRule="evenodd"
-              d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
+        <div className="icons">
+          <div>
+            <FontAwesomeIcon
+              className="friend-requests-icon"
+              icon={faEnvelopeOpenText}
+              onClick={handleFriendRequestsClick}
             />
-          </svg>
-        </Popper>
+            {listFriendRequest.length > 0 && (
+              <div className="notification-dot"></div>
+            )}
+            <FriendRequestsNoti
+              friendRequestList={listFriendRequest}
+              open={anchor !== null}
+              anchor={anchor}
+            />
+          </div>
+          <Popper items={MENU_ITEMS} onChange={handleMenuChange}>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="currentColor"
+              className="bi bi-list toggle-button"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fillRule="evenodd"
+                d="M2.5 12a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5m0-4a.5.5 0 0 1 .5-.5h10a.5.5 0 0 1 0 1H3a.5.5 0 0 1-.5-.5"
+              />
+            </svg>
+          </Popper>
+        </div>
       </div>
       <div className="search-box">
         <svg
@@ -186,7 +221,7 @@ function ChatSidebar({ className, ...props }) {
           setInfoChatContent={props.setInfoChatContent}
         />
       ) : (
-        <p>Don&apos;t have friend</p>
+        <p>Your conversations will appear here</p>
       )}
     </div>
   );

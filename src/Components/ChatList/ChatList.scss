@@ -5,6 +5,7 @@
 }
 
 .chatlist__item {
+  color: var(--text-color);
   width: 80%;
   display: flex;
   border-bottom: 1px solid #ebe7fb;
@@ -91,8 +92,7 @@
 }
 .chatlist__item:hover,
 .chatlist__item.active {
-  background: #f0f0f0;
-
+  background: #383838;
   border-radius: 10px;
 }
 .isOnline {

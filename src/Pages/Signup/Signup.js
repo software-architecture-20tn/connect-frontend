@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
@@ -9,6 +9,7 @@ import { fetchApi } from "../../api";
 import MyTextField from "../../Components/MyTextField/MyTextField";
 import "./Signup.scss";
 import MyButton from "../../Components/MyButton/MyButton";
+import LoadingSpinner from "../../Components/LoadingSpinner";
 
 function Signup() {
   const schema = yup.object().shape({
@@ -32,7 +33,7 @@ function Signup() {
       .oneOf([yup.ref("password"), null], "Passwords must match")
       .required("Password confirmation is required"),
   });
-
+  const [isLoading, setIsLoading] = useState(false);
   const {
     handleSubmit,
     control,
@@ -49,37 +50,47 @@ function Signup() {
       password_retype: data.passwordConfirm,
       username: data.userName,
     };
+    try {
+      setIsLoading(true);
+      const signUp = () => fetchApi.post("/users/register/", dataRequest);
 
-    const signUp = () => fetchApi.post("/users/register/", dataRequest);
-
-    const response = await signUp(dataRequest);
-    const dataResponse = await response.json();
-    if (response.ok) {
-      toast.success("Register successful!", {
-        position: "top-right",
-        autoClose: 1000,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
-    } else {
-      const entries = Object.entries(dataResponse);
-      for (const [key, value] of entries) {
-        if (key === "status") continue;
-        toast.error(`${key}: ${value}`, {
+      const response = await signUp(dataRequest);
+      const dataResponse = await response.json();
+      if (response.ok) {
+        toast.success("Register successful!", {
           position: "top-right",
           autoClose: 1000,
           draggable: true,
           progress: undefined,
           theme: "light",
         });
+      } else {
+        const entries = Object.entries(dataResponse);
+        for (const [key, value] of entries) {
+          if (key === "status") continue;
+          toast.error(`${key}: ${value}`, {
+            position: "top-right",
+            autoClose: 1000,
+            draggable: true,
+            progress: undefined,
+            theme: "light",
+          });
+        }
       }
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setIsLoading(false);
     }
   };
   return (
     <div className="signup">
       <ToastContainer />
-      <form className="signup__form" onSubmit={handleSubmit(onSubmit)}>
+      {isLoading && <LoadingSpinner className="loading" />}
+      <form
+        className={`signup__form ${isLoading ? "blur" : ""}`}
+        onSubmit={handleSubmit(onSubmit)}
+      >
         <label className="signup__form__title">Register</label>
         <label className="signup__form__greeting">Welcome</label>
         <div className="signup__rows">
@@ -136,7 +147,7 @@ function Signup() {
         />
         <MyButton text="Register" type="submit" />
         <Link className="link_to_signin" to="/login">
-          Đăng nhập
+          Log in
         </Link>
       </form>
     </div>

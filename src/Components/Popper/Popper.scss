@@ -25,6 +25,10 @@
     padding: 5px;
     flex: 1;
   }
+
+  span {
+    color: var(--text-color);
+  }
 }
 
 .item-popper:hover {

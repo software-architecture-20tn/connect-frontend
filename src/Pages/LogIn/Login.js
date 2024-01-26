@@ -114,7 +114,7 @@ function Login() {
         />
         <MyButton text="Log in" type="submit" />
         <Link className="link_to_signup" to="/register">
-          Đăng ký
+          Register a new account
         </Link>
         <Link className="link-to-forgot-password" to="/forgot-password">
           Forgot password

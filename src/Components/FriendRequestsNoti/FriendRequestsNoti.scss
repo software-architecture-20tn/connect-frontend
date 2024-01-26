@@ -1,0 +1,23 @@
+.friend-requests {
+
+    &__popper {
+        position: absolute;
+        width: 85%;
+        margin: 0 10px 0 10px;
+
+    }
+    &__items {
+        margin: 5px 0 0 0;
+        
+        background-color: var(--background-color);
+        border: 2px solid var(--shadow-color);
+        border-radius: 10px;
+        padding: 0 10px 0 10px;
+
+        &__text {
+            padding: 25px 0px;
+            background-color: var(--background-color);
+            color: var(--text-color);
+        }
+    }
+}

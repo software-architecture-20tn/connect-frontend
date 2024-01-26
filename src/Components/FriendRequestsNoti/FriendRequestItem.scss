@@ -1,0 +1,29 @@
+.friend-request-container {
+    display: flex;
+    flex-direction: row;
+    align-items:flex-start;
+    padding: 5px;
+    margin: 2px 0 2px 0;
+    gap: 9px;
+    .avatar {
+        width: 40px;
+        height: 40px;
+        
+    }
+
+    &__text {
+        max-width: 70%;
+        color: var(--text-color);
+    }
+    
+    &__accept {
+        color: green;
+        width: 25px;
+        height: 25px;
+        position: relative;
+        &:hover {
+            color: lighten(green, 30%);
+            cursor: pointer;
+        }
+    }
+}
