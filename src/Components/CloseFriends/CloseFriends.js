@@ -57,7 +57,7 @@ function CloseFriends({ className, setSidebarOpen, ...props }) {
           className="back-icon"
           icon={faChevronLeft}
           onClick={() => {
-            setSidebarOpen("listFriend");
+            setSidebarOpen("listChats");
           }}
         />
         <p>Your Close Friends</p>

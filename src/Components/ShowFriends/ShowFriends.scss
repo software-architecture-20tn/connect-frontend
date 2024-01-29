@@ -1,13 +1,11 @@
-.sidebar-wrapper {
+.findfriend-wrapper {
   background-color: var(--background-color) !important;
   width: 350px;
   min-width: 300px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  p {
-    color: var(--text-color);
-  }
+
   .header {
     width: 100%;
     display: flex;
@@ -19,34 +17,21 @@
       font-size: 20px;
       font-weight: 600;
       color: var(--text-color);
+      margin-right: 15px;
     }
 
-    .toggle-button{
-      color: var(--text-color);
-      :hover {
-        color: var(--text-color-light);
-        cursor: pointer;
-      }
+    .back-icon {
+      width: 20px;
+      height: 20px;
+      padding: 10px;
+      border-radius: 10px;
+      color: var(--text-color)
     }
-    
-    
 
-    .icons {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-
-      .friend-requests-icon {
-        width: 18px;
-        height: 18px;
-        color: var(--text-color);
-        :hover {
-          cursor: pointer;
-          color: var(--text-color-light)
-        }
-      }
+    .back-icon:hover {
+      color: var(--text-color-light);
+      background: rgb(191, 191, 191);
+      cursor: pointer;
     }
   }
 
@@ -67,7 +52,7 @@
     }
 
     .search-input {
-      width: 180px;
+      width: 220px;
       height: 25px;
       padding: 5px;
       padding-left: 30px;
@@ -107,16 +92,4 @@
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
-}
-.icons > div {
-  position: relative;
-}
-.notification-dot {
-  position: absolute;
-  top: -5px;
-  right: -5px;
-  width: 10px;
-  height: 10px;
-  background-color: red;
-  border-radius: 50%;
 }

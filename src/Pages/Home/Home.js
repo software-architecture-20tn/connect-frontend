@@ -13,12 +13,13 @@ import ChatContent from "../../Components/ChatContent";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../_helpers/authThunk";
 import LoadingSpinner from "../../Components/LoadingSpinner";
+import ShowFriends from "../../Components/ShowFriends";
 function Home() {
   const getUserInfo = () => fetchApi.get("/users/me/", "");
   const [user, setUser] = useState(null);
   const [refresh, setRefresh] = useState(false);
   const dispatch = useDispatch();
-  const [sidebarOpen, setSidebarOpen] = useState("listFriend");
+  const [sidebarOpen, setSidebarOpen] = useState("listChats");
   const [infoChatContent, setInfoChatContent] = useState({
     sender: null,
     receiver: null,
@@ -56,7 +57,7 @@ function Home() {
 
   let Sidebar;
   switch (sidebarOpen) {
-    case "listFriend":
+    case "listChats":
       Sidebar = (
         <ChatSidebar
           setSidebarOpen={setSidebarOpen}
@@ -72,6 +73,15 @@ function Home() {
           setSidebarOpen={setSidebarOpen}
           setRefresh={setRefresh}
           refresh={refresh}
+        />
+      );
+      break;
+    case "listFriends":
+      Sidebar = (
+        <ShowFriends
+          setSidebarOpen={setSidebarOpen}
+          infoChatContent={infoChatContent}
+          setInfoChatContent={setInfoChatContent}
         />
       );
       break;

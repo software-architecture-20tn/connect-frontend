@@ -34,6 +34,7 @@ function ChatContent({ className, ...props }) {
           `/conversations/direct-messages/${receiverId}/?limit=8&offset=0`,
         );
         const data = await response.json();
+        console.log(data);
         setContentMessage({
           count: data.count,
           results: data.results,
@@ -63,7 +64,10 @@ function ChatContent({ className, ...props }) {
     if (!props.infoChatContent.receiver.group) {
       const receiverId =
         props.infoChatContent.receiver && props.infoChatContent.receiver.id;
-      const curID = contentMessage && contentMessage.results[0].id;
+      const curID =
+        contentMessage &&
+        contentMessage.count > 0 &&
+        contentMessage.results[0].id;
       return async () => {
         if (receiverId) {
           const response = await getChatContent(
@@ -71,7 +75,7 @@ function ChatContent({ className, ...props }) {
           );
           const data = await response.json();
           // setApiGetOldContent(data.next);
-          if (contentMessage !== null) {
+          if (contentMessage !== null && curID) {
             const idxSmaller = data.results.findIndex(
               (item) => item.id <= curID,
             );

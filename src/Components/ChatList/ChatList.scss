@@ -95,20 +95,20 @@
   background: #383838;
   border-radius: 10px;
 }
-.isOnline {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  background-color: #ee1313;
-  border-radius: 50%;
-  border: 2px solid #fff;
-}
-.isOnline.active {
-  background-color: rgb(70, 233, 25);
-}
+// .isOnline {
+//   position: absolute;
+//   width: 10px;
+//   height: 10px;
+//   position: absolute;
+//   bottom: 0;
+//   right: 0;
+//   background-color: #ee1313;
+//   border-radius: 50%;
+//   border: 2px solid #fff;
+// }
+// .isOnline.active {
+//   background-color: rgb(70, 233, 25);
+// }
 .avatar-img {
   overflow: hidden;
   border-radius: 50%;

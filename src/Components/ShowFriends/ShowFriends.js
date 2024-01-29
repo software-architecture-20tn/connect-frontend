@@ -3,22 +3,23 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronLeft } from "@fortawesome/free-solid-svg-icons";
 import "tippy.js/dist/tippy.css";
 
-import "./FindUsers.scss";
+import "./ShowFriends.scss";
 import FriendsList from "../FriendsList";
 import { useDebounce } from "../../hooks";
 import { fetchApi } from "../../api";
 
-function FindUsers({ className, setSidebarOpen, ...props }) {
+function ShowFriends({ className, setSidebarOpen, ...props }) {
+  const [listFriends, setListFriends] = useState([]);
   const [listFilter, setListFilter] = useState([]);
   const [searchValue, setSearchValue] = useState("");
   const debouncedValue = useDebounce(searchValue, 500);
 
-  const handleFindFriends = async () => {
-    const findFriends = () =>
-      fetchApi.get(`/users/users/search/?keyword=${debouncedValue}`);
+  const handleGetFriends = async () => {
+    const getFriends = () => fetchApi.get(`/users/friends/`);
     try {
-      const response = await findFriends();
+      const response = await getFriends();
       const data = await response.json();
+      setListFriends(data);
       setListFilter(data);
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -26,11 +27,19 @@ function FindUsers({ className, setSidebarOpen, ...props }) {
   };
 
   useEffect(() => {
+    handleGetFriends();
+  }, []);
+
+  useEffect(() => {
     if (!debouncedValue || !debouncedValue.trim()) {
-      console.log("start here");
+      setListFilter(listFriends);
       return;
     }
-    handleFindFriends();
+    const filtered = listFriends.filter((friend) => {
+      const sFind = `${friend.first_name} + ${friend.last_name} + ${friend.email}`;
+      return sFind.toLowerCase().includes(searchValue.toLowerCase());
+    });
+    setListFilter(filtered);
   }, [debouncedValue]);
 
   const handleChange = (e) => {
@@ -50,7 +59,7 @@ function FindUsers({ className, setSidebarOpen, ...props }) {
             setSidebarOpen("listChats");
           }}
         />
-        <p>Find Friends</p>
+        <p>List Friends</p>
       </div>
       <div className="search-box">
         <svg
@@ -72,12 +81,16 @@ function FindUsers({ className, setSidebarOpen, ...props }) {
         />
       </div>
       {listFilter.length > 0 ? (
-        <FriendsList ListData={listFilter} addFriend={true} />
+        <FriendsList
+          ListData={listFilter}
+          infoChatContent={props.infoChatContent}
+          setInfoChatContent={props.setInfoChatContent}
+        />
       ) : (
-        <p>Find friends</p>
+        <p>No friends</p>
       )}
     </div>
   );
 }
 
-export default FindUsers;
+export default ShowFriends;
