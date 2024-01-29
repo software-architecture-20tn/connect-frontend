@@ -13,12 +13,14 @@ import ChatContent from "../../Components/ChatContent";
 import { useDispatch } from "react-redux";
 import { logOut } from "../../_helpers/authThunk";
 import LoadingSpinner from "../../Components/LoadingSpinner";
+import GroupMemberModal from "../../Components/GroupMemberModal";
 function Home() {
   const getUserInfo = () => fetchApi.get("/users/me/", "");
   const [user, setUser] = useState(null);
   const [refresh, setRefresh] = useState(false);
   const dispatch = useDispatch();
   const [sidebarOpen, setSidebarOpen] = useState("listFriend");
+  const [groupMemberModal, setGroupMemberModal] = useState(false);
   const [infoChatContent, setInfoChatContent] = useState({
     sender: null,
     receiver: null,
@@ -94,7 +96,18 @@ function Home() {
           {Sidebar}
         </Drawer>
       )}
-      <ChatContent user={user} infoChatContent={infoChatContent} />
+      <ChatContent
+        user={user}
+        infoChatContent={infoChatContent}
+        setModalOpen={setGroupMemberModal}
+      />
+      {groupMemberModal && (
+        <GroupMemberModal
+          groupModalOpen={groupMemberModal}
+          setGroupModalOpen={setGroupMemberModal}
+          infoChatContent={infoChatContent}
+        />
+      )}
     </div>
   );
 }

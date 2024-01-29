@@ -10,7 +10,7 @@ function FriendRequestsNoti({ friendRequestList, open, anchor, ...props }) {
     containerRef.current =
       document.getElementsByClassName("sidebar-wrapper")[0];
   }, []);
-  console.log(friendRequestList);
+  // console.log(friendRequestList);
   return (
     <div className="friend-requests">
       <Popper

@@ -7,7 +7,7 @@ import Avatar from "../ChatList/Avatar";
 import ChatItem from "./ChatItem";
 import "./ChatContent.scss";
 
-function ChatContent({ className, ...props }) {
+function ChatContent({ className, setModalOpen, ...props }) {
   const getChatContent = (apiGetContent) => {
     return fetchApi.get(apiGetContent, "");
   };
@@ -289,7 +289,10 @@ function ChatContent({ className, ...props }) {
         <div>
           <div className="content__header">
             <div className="blocks">
-              <div className="current-chatting-user">
+              <div
+                className="current-chatting-user"
+                onClick={() => setModalOpen(true)}
+              >
                 <Avatar
                   isOnline="active"
                   image={

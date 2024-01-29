@@ -150,7 +150,7 @@ function ChatSidebar({ className, ...props }) {
   return (
     <div className="sidebar-wrapper">
       <div className="header">
-        <p>Telegram</p>
+        <p>Connect</p>
         <div className="icons">
           <div>
             <FontAwesomeIcon

@@ -5,7 +5,6 @@ import React from "react";
 function Avatar({ src, className, onClick, ...props }) {
   const defaultSrc =
     "https://www.shutterstock.com/image-vector/default-avatar-profile-icon-social-600nw-1677509740.jpg";
-  console.log(src);
   return (
     <div className="avatar">
       <img
