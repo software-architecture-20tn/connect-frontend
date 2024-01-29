@@ -101,7 +101,7 @@ function CreateGroups({ className, setSidebarOpen, ...props }) {
           await resSendMessage.json();
         };
         handleSendFirstMessage();
-        setSidebarOpen("listFriend");
+        setSidebarOpen("listChats");
       }
     }
   };
@@ -128,7 +128,7 @@ function CreateGroups({ className, setSidebarOpen, ...props }) {
           className="back-icon"
           icon={faChevronLeft}
           onClick={() => {
-            setSidebarOpen("listFriend");
+            setSidebarOpen("listChats");
           }}
         />
         <p>Create Groups</p>

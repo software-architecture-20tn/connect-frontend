@@ -1,7 +1,7 @@
 import React from "react";
 import Avatar from "../ChatList/Avatar";
 
-function ChatItem({ msg, animationDelay, user, image, sendAt }) {
+function ChatItem({ msg, animationDelay, user, image, sendAt, senderName }) {
   const targetDate = new Date(sendAt);
   const currentDate = new Date();
   if (targetDate.getDate() === currentDate.getDate()) {
@@ -34,6 +34,7 @@ function ChatItem({ msg, animationDelay, user, image, sendAt }) {
       className={`chat__item ${user === "other" ? user : ""} `}
     >
       <div className="chat__item__content">
+        <div className="chat__sender">{senderName}</div>
         <div className="chat__msg">{msg}</div>
         <div className="chat__meta">
           <span>{sendAt}</span>

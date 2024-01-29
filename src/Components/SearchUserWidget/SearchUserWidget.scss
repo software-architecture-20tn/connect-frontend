@@ -4,8 +4,14 @@
   flex-direction: row;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 30px;
   .search-wrapper {
     width: 19vw !important;
+    color: var(--text-color) !important;
+  }
+
+  .searchBox {
+    color: var(--text-color);
   }
   
 }

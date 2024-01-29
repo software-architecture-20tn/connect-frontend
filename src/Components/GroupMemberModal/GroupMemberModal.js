@@ -57,7 +57,11 @@ function GroupMemberModal({
       const response = await removeMemberApi();
       const responseMsg = await response.json();
       if (response.ok) {
-        setMemberChange(!memberChange);
+        if (id === infoChatContent.sender.id) {
+          window.location.reload();
+        } else {
+          setMemberChange(!memberChange);
+        }
       } else {
         toast.error(responseMsg, {
           position: "top-right",
@@ -116,7 +120,11 @@ function GroupMemberModal({
                     </div>
                     <MyButton
                       className="bttn"
-                      text="Remove"
+                      text={
+                        item.id === infoChatContent.sender.id
+                          ? "Leave"
+                          : "Remove"
+                      }
                       onClick={() => handleRemove(item.id)}
                       disabled={btnDisabled}
                     />

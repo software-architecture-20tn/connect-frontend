@@ -45,12 +45,23 @@ function FriendsListItem({ data, active, isOnline, animationDelay, ...props }) {
     }
   };
 
+  const handleChooseChatContent = () => {
+    props.setInfoChatContent((prev) => ({
+      ...prev,
+      receiver: {
+        ...data,
+        conversation_name: data.username,
+      },
+    }));
+  };
+
   return (
     <>
       <div
         style={{ animationDelay: `0.${animationDelay}s` }}
         // onClick={this.selectChat}
         className={`friendslist__item ${active ? "active" : ""}`}
+        onClick={props.infoChatContent && handleChooseChatContent}
       >
         <Avatar
           image={

@@ -63,7 +63,10 @@ function ChatContent({ className, setModalOpen, ...props }) {
     if (!props.infoChatContent.receiver.group) {
       const receiverId =
         props.infoChatContent.receiver && props.infoChatContent.receiver.id;
-      const curID = contentMessage && contentMessage.results[0].id;
+      const curID =
+        contentMessage &&
+        contentMessage.count > 0 &&
+        contentMessage.results[0].id;
       return async () => {
         if (receiverId) {
           const response = await getChatContent(
@@ -71,7 +74,7 @@ function ChatContent({ className, setModalOpen, ...props }) {
           );
           const data = await response.json();
           // setApiGetOldContent(data.next);
-          if (contentMessage !== null) {
+          if (contentMessage !== null && curID) {
             const idxSmaller = data.results.findIndex(
               (item) => item.id <= curID,
             );
@@ -262,7 +265,9 @@ function ChatContent({ className, setModalOpen, ...props }) {
             const image =
               item.sender === props.infoChatContent.sender.id
                 ? props.infoChatContent.sender.avatar
-                : props.infoChatContent.receiver.avatar;
+                : item.sender_avatar &&
+                  `${process.env.REACT_APP_MEDIA_URL}${item.sender_avatar}`;
+            console.log(image);
             return (
               <ChatItem
                 animationDelay={index + 2}
@@ -271,6 +276,7 @@ function ChatContent({ className, setModalOpen, ...props }) {
                 msg={item.content}
                 image={image !== null ? image : "http://placehold.it/80x80"}
                 sendAt={item.time}
+                senderName={`${item.sender_first_name} ${item.sender_last_name}`}
               />
             );
           })}

@@ -10,6 +10,7 @@
   justify-content: center;
   width: 100%;
   height: 100%;
+  color: var(--text-color);
 }
 .content__header {
   padding-bottom: 15px;
@@ -19,7 +20,7 @@
   display: flex;
   align-items: center;
   width: 100%;
-  
+  color: var(--text-color);
   background-color: transparent;
   :hover {
     cursor: pointer;
@@ -68,6 +69,7 @@
   ); /* or: ease, ease-in, ease-in-out, linear, cubic-bezier(x1, y1, x2, y2) */
   animation-fill-mode: both; /* or: backwards, both, none */
   animation-delay: 0.2s; /* or: Xms */
+
 }
 @keyframes showIn {
   0% {
@@ -84,12 +86,18 @@
   padding: 1px;
 }
 .chat__item__content {
-  background-color: #4462ff;
+  background-color: var(--user-box-chat);
   color: #fff;
   padding: 15px;
   border-radius: 10px 10px 0 10px;
   max-width: 50%;
   min-width: 215px;
+
+  .chat__sender {
+    font-size: 13px;
+    margin-bottom: 10px;
+    color: var(--text-color-light);
+  }
 }
 .chat__item__content .chat__meta {
   justify-content: space-between;
@@ -110,8 +118,8 @@
   transform-origin: left;
 }
 .chat__item.other .chat__item__content {
-  background-color: #fff;
-  color: black;
+  background-color: var(--background-color);
+  color: var(--text-color);
   border-radius: 10px 10px 10px 0;
   max-width: 50%;
 }
@@ -126,11 +134,12 @@
   padding-top: 30px;
 }
 .sendNewMessage {
-  background-color: #fff;
+  background-color: var(--background-color);
   display: flex;
   justify-content: space-between;
   padding: 10px;
   border-radius: 8px;
+  color: var(--text-color);
 }
 .sendNewMessage button {
   width: 36px;
@@ -159,8 +168,10 @@
   background-color: transparent;
   border: none;
   outline: none;
+  color: var(--text-color);
 }
 #sendMsgBtn {
   background-color: #3b5bfe;
   color: #fff;
 }
+

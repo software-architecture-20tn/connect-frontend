@@ -95,7 +95,7 @@ function Profile({ user, setRefresh, refresh, setSidebarOpen }) {
           className="back-icon"
           icon={faChevronLeft}
           onClick={() => {
-            setSidebarOpen("listFriend");
+            setSidebarOpen("listChats");
           }}
         />
         <p>Your Profile</p>
