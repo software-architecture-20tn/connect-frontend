@@ -34,7 +34,6 @@ function ChatContent({ className, ...props }) {
           `/conversations/direct-messages/${receiverId}/?limit=8&offset=0`,
         );
         const data = await response.json();
-        console.log(data);
         setContentMessage({
           count: data.count,
           results: data.results,
