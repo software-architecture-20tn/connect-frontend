@@ -15,12 +15,13 @@
         align-items: center;
         border-radius: 20px;
         padding: 30px;
+        
         &__members {
             display: flex;
             flex-direction: column;
             width: 100%;
             overflow-y: auto;
-
+            height: 100%;
             &__member {
                 display: flex;
                 flex-direction: row;
@@ -42,6 +43,10 @@
                     align-items: center;
                 }
             }
+        }
+
+        .close-btn {
+            margin-top: auto;
         }
     }
 }

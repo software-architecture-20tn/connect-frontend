@@ -132,6 +132,12 @@ function GroupMemberModal({
                 );
               })}
             </div>
+            <MyButton
+              text="Close"
+              color="error"
+              onClick={handleClose}
+              className="close-btn"
+            />
           </div>
         </Fade>
       </Modal>
