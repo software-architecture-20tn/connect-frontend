@@ -50,7 +50,7 @@ const MENU_ITEMS = [
   },
   {
     icon: <FontAwesomeIcon icon={faCircleQuestion} />,
-    title: "Telegram FAQ",
+    title: "The Connect FAQ",
     type: "faq",
   },
   {
@@ -150,7 +150,7 @@ function ChatSidebar({ className, ...props }) {
   return (
     <div className="sidebar-wrapper">
       <div className="header">
-        <p>Telegram</p>
+        <p>The Connect</p>
         <div className="icons">
           <div>
             <FontAwesomeIcon
