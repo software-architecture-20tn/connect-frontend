@@ -7,10 +7,14 @@ import ChatListItem from "./ChatListItem";
 function ChatList({ ListData, className, ...props }) {
   const handleActive = (item) => {
     if (props.infoChatContent.receiver) {
-      return (
-        props.infoChatContent.receiver.id === item.receiver ||
-        props.infoChatContent.receiver.id === item.sender
-      );
+      if (item.group === null) {
+        return (
+          props.infoChatContent.receiver.id === item.receiver ||
+          props.infoChatContent.receiver.id === item.sender
+        );
+      } else {
+        return props.infoChatContent.receiver.group === item.group;
+      }
     }
 
     return false;

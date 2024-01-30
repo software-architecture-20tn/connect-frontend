@@ -18,6 +18,7 @@ function ChatListItem({ data, active, isOnline, animationDelay, ...props }) {
           console.log(response);
         }
         const receiverInfo = await response.json();
+        console.log("Info user choose ", receiverInfo);
         props.setInfoChatContent((prev) => ({
           ...prev,
           receiver: {

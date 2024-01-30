@@ -27,14 +27,16 @@ function ChatItem({ msg, animationDelay, user, image, sendAt, senderName }) {
     // Nếu là ngày hôm trước, thêm thông tin ngày vào
     sendAt = formattedTargetDate;
   }
-
+  console.log("undefined ", senderName);
   return (
     <div
       style={{ animationDelay: `0.${animationDelay}s` }}
       className={`chat__item ${user === "other" ? user : ""} `}
     >
       <div className="chat__item__content">
-        <div className="chat__sender">{senderName}</div>
+        <div className="chat__sender">
+          {senderName !== undefined ? senderName : ""}
+        </div>
         <div className="chat__msg">{msg}</div>
         <div className="chat__meta">
           <span>{sendAt}</span>

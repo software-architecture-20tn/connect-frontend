@@ -276,7 +276,11 @@ function ChatContent({ className, setModalOpen, ...props }) {
                 msg={item.content}
                 image={image !== null ? image : "http://placehold.it/80x80"}
                 sendAt={item.time}
-                senderName={`${item.sender_first_name} ${item.sender_last_name}`}
+                senderName={
+                  item.sender_first_name !== undefined &&
+                  item.sender_last_name !== undefined &&
+                  `${item.sender_first_name} ${item.sender_last_name}`
+                }
               />
             );
           })}
