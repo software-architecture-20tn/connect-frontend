@@ -12,6 +12,7 @@ function GroupMemberModal({
   setGroupModalOpen,
   className,
   infoChatContent,
+  chatType,
   ...props
 }) {
   const containerRef = useRef(null);
@@ -25,18 +26,33 @@ function GroupMemberModal({
 
   useEffect(() => {
     if (groupModalOpen) {
-      const getMembersInGroup = async () => {
-        // console.log("info chat content", infoChatContent);
-        const response = await fetchApi.get(
-          `/conversations/groups/${infoChatContent.receiver.group}/`,
-        );
-        const groupData = await response.json();
-        setGroupMembers(groupData.members);
-      };
-      try {
-        getMembersInGroup();
-      } catch (e) {
-        console.log(e);
+      if (chatType === "gm") {
+        const getMembersInGroup = async () => {
+          const response = await fetchApi.get(
+            `/conversations/groups/${infoChatContent.receiver.group}/`,
+          );
+          const groupData = await response.json();
+          setGroupMembers(groupData.members);
+        };
+        try {
+          getMembersInGroup();
+        } catch (e) {
+          console.log(e);
+        }
+      } else {
+        const chatMembers = [
+          {
+            avatar: infoChatContent.receiver.avatar,
+            first_name: infoChatContent.receiver.first_name,
+            last_name: infoChatContent.receiver.last_name,
+          },
+          {
+            avatar: infoChatContent.sender.avatar,
+            first_name: infoChatContent.sender.first_name,
+            last_name: infoChatContent.sender.last_name,
+          },
+        ];
+        setGroupMembers(chatMembers);
       }
     }
   }, [groupModalOpen, memberChange]);
@@ -45,7 +61,6 @@ function GroupMemberModal({
     const requestBody = {
       members_ids: [id],
     };
-    console.log("request body", requestBody);
     const removeMemberApi = () =>
       fetchApi.post(
         `/conversations/groups/${infoChatContent.receiver.group}/remove-members/`,
@@ -78,8 +93,6 @@ function GroupMemberModal({
       setIsLoading(false);
     }
   };
-  // const handleOpen = () => setGroupModalOpen(true);
-  console.log("gms", groupMembers);
   return (
     <div className={`group-modal ${className}`} {...props}>
       <Modal
@@ -111,30 +124,33 @@ function GroupMemberModal({
                       <Avatar
                         src={
                           item.avatar &&
-                          `${process.env.REACT_APP_MEDIA_URL}${item.avatar}`
+                          (item.avatar.startsWith("/media")
+                            ? `${process.env.REACT_APP_MEDIA_URL}${item.avatar}`
+                            : `${item.avatar}`)
                         }
                       />
                       <p>
                         {item.first_name} {item.last_name}
                       </p>
                     </div>
-                    <MyButton
-                      className="bttn"
-                      text={
-                        item.id === infoChatContent.sender.id
-                          ? "Leave"
-                          : "Remove"
-                      }
-                      onClick={() => handleRemove(item.id)}
-                      disabled={btnDisabled}
-                    />
+                    {chatType === "gm" && (
+                      <MyButton
+                        className="bttn"
+                        text={
+                          item.id === infoChatContent.sender.id
+                            ? "Leave"
+                            : "Remove"
+                        }
+                        onClick={() => handleRemove(item.id)}
+                        disabled={btnDisabled}
+                      />
+                    )}
                   </div>
                 );
               })}
             </div>
             <MyButton
               text="Close"
-              color="error"
               onClick={handleClose}
               className="close-btn"
             />

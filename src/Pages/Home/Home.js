@@ -22,6 +22,7 @@ function Home() {
   const dispatch = useDispatch();
   const [sidebarOpen, setSidebarOpen] = useState("listChats");
   const [groupMemberModal, setGroupMemberModal] = useState(false);
+  const [chatType, setChatType] = useState("");
   const [infoChatContent, setInfoChatContent] = useState({
     sender: null,
     receiver: null,
@@ -110,12 +111,15 @@ function Home() {
         user={user}
         infoChatContent={infoChatContent}
         setModalOpen={setGroupMemberModal}
+        setChatType={setChatType}
+        chatType={chatType}
       />
       {groupMemberModal && (
         <GroupMemberModal
           groupModalOpen={groupMemberModal}
           setGroupModalOpen={setGroupMemberModal}
           infoChatContent={infoChatContent}
+          chatType={chatType}
         />
       )}
     </div>

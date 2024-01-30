@@ -50,9 +50,6 @@ function Profile({ user, setRefresh, refresh, setSidebarOpen }) {
     formData.append("username", data.username);
     formData.append("bio", data.bio);
     if (avatarFile) formData.append("avatar", avatarFile);
-    for (const pair of formData.entries()) {
-      console.log(pair[0] + ", " + pair[1]);
-    }
     try {
       const putUserInfo = () => fetchApi.put("/users/me/", formData);
       const response = await putUserInfo();
@@ -70,7 +67,6 @@ function Profile({ user, setRefresh, refresh, setSidebarOpen }) {
   };
 
   const handleFileChange = (e) => {
-    console.log("handle file change");
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       if (!file.type.startsWith("image/")) {
@@ -83,7 +79,6 @@ function Profile({ user, setRefresh, refresh, setSidebarOpen }) {
   };
 
   const handleAvatarClick = () => {
-    console.log("handle avatar click");
     fileInputRef.current.click();
   };
   return isLoading ? (

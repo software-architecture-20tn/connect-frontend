@@ -134,12 +134,10 @@ function ChatSidebar({ className, ...props }) {
         props.setSidebarOpen("createGroups");
         break;
       case "themeSwitching":
-        console.log("swtich theme");
         dispatch(setTheme());
         break;
       case "logout":
         dispatch(logOut());
-        // navigate("/login");
         break;
       default:
     }

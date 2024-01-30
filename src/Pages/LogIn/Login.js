@@ -74,7 +74,6 @@ function Login() {
       dataRequest.id = data.email;
     }
 
-    console.log(dataRequest);
     try {
       await dispatch(logIn(dataRequest));
     } catch (error) {

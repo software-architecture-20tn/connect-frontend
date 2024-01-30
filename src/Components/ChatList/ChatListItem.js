@@ -18,7 +18,6 @@ function ChatListItem({ data, active, isOnline, animationDelay, ...props }) {
           console.log(response);
         }
         const receiverInfo = await response.json();
-        console.log("Info user choose ", receiverInfo);
         props.setInfoChatContent((prev) => ({
           ...prev,
           receiver: {
@@ -41,7 +40,6 @@ function ChatListItem({ data, active, isOnline, animationDelay, ...props }) {
       }));
     }
   };
-
   return (
     <>
       <div
@@ -52,7 +50,11 @@ function ChatListItem({ data, active, isOnline, animationDelay, ...props }) {
       >
         <Avatar
           image={
-            data.avatar !== null ? data.avatar : "http://placehold.it/80x80"
+            !data.avatar
+              ? "http://placehold.it/80x80"
+              : data.avatar.startsWith("/media")
+              ? `${process.env.REACT_APP_MEDIA_URL}${data.avatar}`
+              : data.avatar
           }
           isOnline={isOnline}
         />
