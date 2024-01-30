@@ -27,7 +27,6 @@ function ChatItem({ msg, animationDelay, user, image, sendAt, senderName }) {
     // Nếu là ngày hôm trước, thêm thông tin ngày vào
     sendAt = formattedTargetDate;
   }
-  console.log("undefined ", senderName);
   return (
     <div
       style={{ animationDelay: `0.${animationDelay}s` }}

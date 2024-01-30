@@ -21,11 +21,9 @@ function SearchUserWidget({
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
-    console.log("handle get friends");
     const handleGetFriends = async () => {
       const res = await getListFriends();
       const data = await res.json();
-      console.log("get friends", data);
       setListFriends(data);
     };
 
@@ -75,12 +73,9 @@ function SearchUserWidget({
   };
 
   const addMember = async () => {
-    console.log("friend chosen", addFriends);
-    console.log("options", options);
     const requestBody = {
       members_ids: addFriends.map((item) => item.id),
     };
-    console.log(requestBody);
     const addMemberApi = () =>
       fetchApi.post(
         `/conversations/groups/${groupId}/add-members/`,
@@ -91,9 +86,7 @@ function SearchUserWidget({
       const response = await addMemberApi();
       const data = await response.json();
       if (response.ok) {
-        console.log(memberChanged);
         setMemberChanged((memberChanged) => !memberChanged);
-        console.log(memberChanged);
       }
       console.log(data);
     } catch (e) {

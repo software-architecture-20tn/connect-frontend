@@ -30,7 +30,6 @@ function PasswordForgot() {
     const dataRequest = {
       email: data.email,
     };
-    console.log(dataRequest);
     dispatch(resetPassword(dataRequest));
     setShowSuccessMessage(true);
   };

@@ -49,7 +49,6 @@ function CloseFriends({ className, setSidebarOpen, ...props }) {
   useEffect(() => {
     setCloseFriends(closeFriendsList);
   }, []);
-  console.log(closeFriends);
   return (
     <div className={`${className} close-friend`}>
       <div className="header">

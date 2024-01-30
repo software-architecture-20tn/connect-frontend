@@ -7,7 +7,13 @@ import Avatar from "../ChatList/Avatar";
 import ChatItem from "./ChatItem";
 import "./ChatContent.scss";
 
-function ChatContent({ className, setModalOpen, ...props }) {
+function ChatContent({
+  className,
+  setModalOpen,
+  chatType,
+  setChatType,
+  ...props
+}) {
   const getChatContent = (apiGetContent) => {
     return fetchApi.get(apiGetContent, "");
   };
@@ -20,7 +26,6 @@ function ChatContent({ className, setModalOpen, ...props }) {
   const messagesRef = useRef(null);
   const [contentMessage, setContentMessage] = useState(null);
   const [message, setMessage] = useState("");
-
   // Load Start Chat Content
   const loadStartChatContent = async () => {
     if (props.infoChatContent.receiver === null) {
@@ -30,6 +35,7 @@ function ChatContent({ className, setModalOpen, ...props }) {
       const receiverId =
         props.infoChatContent.receiver && props.infoChatContent.receiver.id;
       if (receiverId) {
+        setChatType("dm");
         const response = await getChatContent(
           `/conversations/direct-messages/${receiverId}/?limit=8&offset=0`,
         );
@@ -40,7 +46,7 @@ function ChatContent({ className, setModalOpen, ...props }) {
         });
       }
     } else {
-      console.log(props.infoChatContent.receiver);
+      setChatType("gm");
       const response = await getChatContent(
         `/conversations/group-messages/${props.infoChatContent.receiver.group}/?limit=8&offset=0`,
       );
@@ -262,12 +268,19 @@ function ChatContent({ className, setModalOpen, ...props }) {
           contentRender.map((item, index) => {
             const user =
               item.sender === props.infoChatContent.sender.id ? "me" : "other";
-            const image =
-              item.sender === props.infoChatContent.sender.id
-                ? props.infoChatContent.sender.avatar
-                : item.sender_avatar &&
-                  `${process.env.REACT_APP_MEDIA_URL}${item.sender_avatar}`;
-            console.log(image);
+            let image = null;
+            if (chatType === "gm") {
+              image =
+                item.sender === props.infoChatContent.sender.id
+                  ? props.infoChatContent.sender.avatar
+                  : item.sender_avatar &&
+                    `${process.env.REACT_APP_MEDIA_URL}${item.sender_avatar}`;
+            } else {
+              image =
+                item.sender === props.infoChatContent.sender.id
+                  ? props.infoChatContent.sender.avatar
+                  : props.infoChatContent.receiver.avatar;
+            }
             return (
               <ChatItem
                 animationDelay={index + 2}
@@ -277,9 +290,11 @@ function ChatContent({ className, setModalOpen, ...props }) {
                 image={image !== null ? image : "http://placehold.it/80x80"}
                 sendAt={item.time}
                 senderName={
-                  item.sender_first_name !== undefined &&
-                  item.sender_last_name !== undefined &&
-                  `${item.sender_first_name} ${item.sender_last_name}`
+                  chatType === "gm"
+                    ? `${item.sender_first_name} ${item.sender_last_name}`
+                    : user === "other"
+                    ? `${props.infoChatContent.receiver.first_name} ${props.infoChatContent.receiver.last_name}`
+                    : `${props.infoChatContent.sender.first_name} ${props.infoChatContent.sender.last_name}`
                 }
               />
             );
