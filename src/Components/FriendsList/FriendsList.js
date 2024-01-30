@@ -22,6 +22,7 @@ function FriendsList({ ListData, className, ...props }) {
             active={handleActive(item) ? "active" : ""}
             isOnline={item.isOnline ? "active" : ""}
             data={item}
+            addFriend={props.addFriend}
             setInfoChatContent={props.setInfoChatContent}
             infoChatContent={props.infoChatContent}
           />
