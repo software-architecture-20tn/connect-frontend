@@ -40,6 +40,7 @@ function ChatListItem({ data, active, isOnline, animationDelay, ...props }) {
       }));
     }
   };
+
   return (
     <>
       <div
