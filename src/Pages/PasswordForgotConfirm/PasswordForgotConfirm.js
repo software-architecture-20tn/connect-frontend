@@ -102,12 +102,6 @@ function PasswordForgotConfirm() {
             <p>You can now log in with your new password.</p>
           </div>
         )}
-        {/* {showErrorMessage && (
-          <div className="password-forgot-confirm__form__error-message">
-            <p>Something went wrong.</p>
-            <p>Please try again.</p>
-          </div>
-        )} */}
       </form>
     </div>
   );
