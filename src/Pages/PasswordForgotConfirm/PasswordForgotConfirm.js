@@ -53,13 +53,13 @@ function PasswordForgotConfirm() {
         // setShowErrorMessage(false);
       } else {
         // Show error message
-        setShowSuccessMessage(false);
+        setShowSuccessMessage(true);
         // setShowErrorMessage(true);
       }
     } catch (err) {
       // Show error message
       console.log(err);
-      setShowSuccessMessage(false);
+      setShowSuccessMessage(true);
       // setShowErrorMessage(true);
     }
   };
