@@ -14,7 +14,7 @@ function PasswordForgotConfirm() {
   const [searchParams, setSearchParams] = useSearchParams();
   const token = searchParams.get("token");
   const [showSuccessMessage, setShowSuccessMessage] = useState(false);
-  const [showErrorMessage, setShowErrorMessage] = useState(false);
+  // const [showErrorMessage, setShowErrorMessage] = useState(false);
 
   const schema = yup.object().shape({
     password: yup
@@ -49,17 +49,17 @@ function PasswordForgotConfirm() {
       if (response.status === 200) {
         // Reset form and show success message
         setShowSuccessMessage(true);
-        setShowErrorMessage(false);
+        // setShowErrorMessage(false);
       } else {
         // Show error message
         setShowSuccessMessage(false);
-        setShowErrorMessage(true);
+        // setShowErrorMessage(true);
       }
     } catch (err) {
       // Show error message
       console.log(err);
       setShowSuccessMessage(false);
-      setShowErrorMessage(true);
+      // setShowErrorMessage(true);
     }
   };
 
@@ -102,12 +102,12 @@ function PasswordForgotConfirm() {
             <p>You can now log in with your new password.</p>
           </div>
         )}
-        {showErrorMessage && (
+        {/* {showErrorMessage && (
           <div className="password-forgot-confirm__form__error-message">
             <p>Something went wrong.</p>
             <p>Please try again.</p>
           </div>
-        )}
+        )} */}
       </form>
     </div>
   );
