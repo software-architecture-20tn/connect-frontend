@@ -96,6 +96,8 @@ function PasswordForgotConfirm() {
 
         <MyButton text="Confirm Reset" type="submit" />
 
+        console.log("showSuccessMessage: ", showSuccessMessage);
+
         {showSuccessMessage && (
           <div className="password-forgot-confirm__form__success-message">
             <p>Password reset successfully confirmed.</p>
