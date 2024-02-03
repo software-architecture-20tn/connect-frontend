@@ -46,6 +46,7 @@ function PasswordForgotConfirm() {
     };
     try {
       const response = await dispatch(resetPasswordConfirm(dataRequest));
+      console.log("response: ", response);
       if (response.status === 200) {
         // Reset form and show success message
         setShowSuccessMessage(true);
@@ -98,10 +99,15 @@ function PasswordForgotConfirm() {
 
         <MyButton text="Confirm Reset" type="submit" />
 
-        {showSuccessMessage && (
+        {showSuccessMessage ? (
           <div className="password-forgot-confirm__form__success-message">
             <p>Password reset successfully confirmed.</p>
             <p>You can now log in with your new password.</p>
+          </div>
+        ) : (
+          <div className="password-forgot-confirm__form__error-message">
+            <p>Something went wrong.</p>
+            <p>Please try again.</p>
           </div>
         )}
       </form>
