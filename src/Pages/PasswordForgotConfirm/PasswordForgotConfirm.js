@@ -63,6 +63,8 @@ function PasswordForgotConfirm() {
     }
   };
 
+  console.log("showSuccessMessage: ", showSuccessMessage);
+
   return (
     <div className="password-forgot-confirm">
       <form
@@ -95,8 +97,6 @@ function PasswordForgotConfirm() {
         />
 
         <MyButton text="Confirm Reset" type="submit" />
-
-        console.log("showSuccessMessage: ", showSuccessMessage);
 
         {showSuccessMessage && (
           <div className="password-forgot-confirm__form__success-message">
