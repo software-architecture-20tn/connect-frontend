@@ -52,7 +52,7 @@ function PasswordForgotConfirm() {
       if (response.status === 200) {
         // Reset form and show success message
         setShowSuccessMessage(true);
-        // setShowErrorMessage(false);
+        setShowErrorMessage(false);
       } else {
         // Show error message
         setShowSuccessMessage(false);
